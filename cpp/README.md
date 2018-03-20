@@ -35,11 +35,11 @@ En Ubuntu instalar el package: `apt-get install libopencv-dev`
 
 ## Compilar fuentes de OpenCV en Linux
 
-  * Primero se deben instalar FFmpeg para leer videos.
-    * Binarios para Ubuntu: `sudo apt-get install libavutil-dev libavdevice-dev libavcodec-dev libavfilter-dev libavformat-dev libswresample-dev`
-    * Binarios para Windows:  (MSYS2) `pacman -S --needed mingw-w64-x86_64-ffmpeg`. (DLLS) https://ffmpeg.zeranoe.com/builds/
-    * Se pueden obtener los fuentes desde http://www.ffmpeg.org/ y ademas se deben compilar los codecs.
-  * Instalar otras dependencias para compilar OpenCV: `sudo apt-get install cmake python-dev python-numpy libtbb-dev libeigen3-dev libgtk2.0-dev libdc1394-22-dev libxine-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev libtiff4-dev libjpeg-dev libjasper-dev`
+  * Primero se debe instalar FFmpeg (para poder abrir videos):
+    * Binarios Ubuntu: `sudo apt-get install libavutil-dev libavdevice-dev libavcodec-dev libavfilter-dev libavformat-dev libswresample-dev`
+    * Binarios Windows:  (MSYS2) `mingw-w64-x86_64-ffmpeg` (DLLS) https://ffmpeg.zeranoe.com/builds/
+    * Para compilar los fuentes, se deben descargar desde http://www.ffmpeg.org/ y luego `./configure  [opciones]; make; make install`. Se deben compilar los codecs, especialmente x264.
+  * Instalar otras dependencias para OpenCV: `sudo apt-get install cmake python-dev python-numpy libtbb-dev libeigen3-dev libgtk2.0-dev libdc1394-22-dev libxine-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev libtiff4-dev libjpeg-dev libjasper-dev`
   * Descargar los fuentes de OpenCV desde https://github.com/opencv/opencv/releases y desde  https://github.com/opencv/opencv_contrib/releases
   * Descomprimirlos y ejecutar los siguientes pasos:
 
@@ -78,9 +78,9 @@ make install
 
 Si se instaló en un directorio fuera de `/usr/` es posible que en tiempo de ejecución no se encuentren las librerias (`error: cannot open shared object file`). El comando `ld` da información de como se esta resolviendo las dependencias.
 
-Para resolver dependencias faltantes hay dos opciones:
-  * Opción 1: Agregar el directorio `$HOME/mi_opencv/lib` a la variable de entorno `LD_LIBRARY_PATH` para que busque ahí librerías.
-  * Opción 2: Compilar con el parámetro `-Wl,-rpath,$HOME/mi_opencv/lib` para que el linker además del nombre incluya el path de la libreria usada.
+Para resolver dependencias faltantes en tiempo de ejecución hay dos opciones:
+  * Opción 1: Agregar el directorio `$HOME/mi_opencv/lib` a la variable de entorno `LD_LIBRARY_PATH` para que el sistema operativo busque ahí librerías requeridas para la ejecución.
+  * Opción 2: Compilar con el parámetro `-Wl,-rpath,$HOME/mi_opencv/lib` para que el linker además del nombre incluya el path compmleto de la libreria usada.
 
 ## Compilar fuentes de OpenCV en Windows
 
@@ -90,7 +90,7 @@ Si se usa **MinGW** los pasos son muy similares a la compilación en Linux.
 
 Para **Visual Studio** con CMake se genera un archivo `solution` el cual se abre con Visual Studio y se presion sobre compilar.
 
-## Compilación de un programa en C++ e IDE
+## Compilación de un programa en C++
 
 Para las tareas del curso puede ser suficiente usar un editor como Notepad++ y compilar por línea de comandos.
 
@@ -119,6 +119,8 @@ El utilitario `pkg-config` entrega los parámetros de compilación al usar libre
    * Linkeo: `pkg-config --libs libreria1 libreria2`
 
 Usualmente se crea un archivo de nombre `Makefile` con las instrucciones de compilación que luego se ejecuta con el comando `make`.
+
+## IDE
 
 Otra opción es utilizar un IDE. Los más usados para C++ son: Codeblocks, Eclipse CDT, QtCreator.
 
