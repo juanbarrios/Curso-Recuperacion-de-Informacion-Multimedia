@@ -31,12 +31,15 @@ Primero se debe escoger un compilador de C++.
 		3. Instalar paquetes de desarrollo: `pacman -S --needed base-devel`
 		4. Instalar el compilador **MinGW 64 bits**: `pacman -S --needed mingw-w64-x86_64-toolchain` (para 32 bit cambiar `x86_64` por `i686`)
 		5. Instalar **OpenCV**: `pacman -S --needed mingw-w64-x86_64-opencv`
-		6. Instalar los dependencias opcionales de OpenCV: `pacman -S --needed mingw-w64-x86_64-eigen3 mingw-w64-x86_64-ffmpeg mingw-w64-x86_64-hdf5 mingw-w64-x86_64-tesseract-ocr mingw-w64-x86_64-vtk`  La lista de dependencias opcionales se obtiene con `pacman -Si mingw-w64-x86_64-opencv`
+		6. Instalar otros comandos útiles: `pacman -S --needed mingw-w64-x86_64-ffmpeg mingw-w64-x86_64-imagemagick` La lista de dependencias opcionales de OpenCV se obtiene con `pacman -Si mingw-w64-x86_64-opencv`
 		7. Para usar `g++` se debe abrir la ventana "MSYS2 MinGW 64-bits" o en una ventana agregar al PATH `C:\msys64\usr\bin;C:\msys64\mingw64\bin` y agregar a PKG_CONFIG_PATH `C:\msys64\mingw64\lib\pkgconfig:C:\msys64\usr\lib\pkgconfig`
 
 ## Compilar fuentes de OpenCV en Linux
 
-  * Instalar algunas dependencias antes, específicamente la libreria FFmpeg es necesaria para leer videos. Se pueden obtener los fuentes desde http://www.ffmpeg.org/ o instalar el binario en Ubuntu: `sudo apt-get install libavutil-dev libavdevice-dev libavcodec-dev libavfilter-dev libavformat-dev libswresample-dev`
+  * Primero se deben instalar FFmpeg para leer videos.
+    * Binarios para Ubuntu: `sudo apt-get install libavutil-dev libavdevice-dev libavcodec-dev libavfilter-dev libavformat-dev libswresample-dev`
+    * Binarios para Windows:  (MSYS2) `pacman -S --needed mingw-w64-x86_64-ffmpeg`. (DLLS) https://ffmpeg.zeranoe.com/builds/
+    * Se pueden obtener los fuentes desde http://www.ffmpeg.org/ y ademas se deben compilar los codecs.
   * Instalar otras dependencias para compilar OpenCV: `sudo apt-get install cmake python-dev python-numpy libtbb-dev libeigen3-dev libgtk2.0-dev libdc1394-22-dev libxine-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev libtiff4-dev libjpeg-dev libjasper-dev`
   * Descargar los fuentes de OpenCV desde https://github.com/opencv/opencv/releases y desde  https://github.com/opencv/opencv_contrib/releases
   * Descomprimirlos y ejecutar los siguientes pasos:
