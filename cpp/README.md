@@ -7,7 +7,7 @@ En Ubuntu instalar el package: `apt-get install libopencv-dev`
 ## Versión binaria para Windows
 
 * Primero se debe escoger un compilador de C++.
-	* En C++ no es posible mezclar librerías generadas por compiladores diferentes, es decir, al compilar un programa con `g++` no es posible linkear con librerías generadas por `cl` (Visual Studio). Esto se debe a que cada compilador usa un "name mangling" diferente para guardar las funciones (como dato extra sí es posible mezclar compiladores usando API en C ya que no existe overloading de funciones).
+	* En C++ no es posible mezclar librerías generadas por compiladores diferentes, es decir, al compilar un programa con `g++` no es posible linkear con librerías generadas por `cl` (Visual Studio). Esto se debe a que cada compilador usa un "name mangling" diferente para guardar las funciones (como dato extra, sí es posible mezclar compiladores usando C ya que no existe overloading de funciones).
 
 * **Visual Studio**: Compilador oficial para Windows.
 	* Ventajas: es que se obtienen aplicaciones nativas de windows con posibilidad de usar GPU.
