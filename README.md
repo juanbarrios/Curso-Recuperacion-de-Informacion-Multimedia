@@ -4,7 +4,7 @@ Ejemplos para el curso CC5213
 
 # Ejemplos para C++
 
-1. En `/cpp/` están los ejemplos para C++. Requiere un compilador C++ 11 (probados en windows y linux).
+1. En `/cpp/` están los ejemplos para C++. Requiere un compilador C++ 11 (Windows o Linux).
 2. En un terminal cambiar al directorio donde está el archivo de `Makefile` y escribir `make`.
 3. Ejecutar:
 	* Linux: `build/Ejemplo1`
