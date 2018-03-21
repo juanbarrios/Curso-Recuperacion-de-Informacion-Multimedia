@@ -17,8 +17,8 @@ En Ubuntu instalar el package: `apt-get install libopencv-dev`
 		2. Las librerías están en `C:\[ZZZ]\opencv\build\x64\vc15\bin`. Agregar al PATH la ruta `C:\[ZZZ]\opencv\build\x64\vc15\bin`.
 		3. Agregar al PATH la ruta `C:\[ZZZ]\opencv\build\bin`. Si no se realiza este paso no se podrán leer archivos `.mp4` ya que los codecs están en `opencv_ffmpeg341.dll`.
 
-* **Cygwin**: Es un port de linux para windows que instala la mayoria de los comandos linux (incluido `g++` y `bash`).
-	* Ventajas: un código fuente para Linux y puede ser compilado para Windows prácticamente sin modificaciones.
+* **Cygwin**: Es un port de Linux para Windows que incluye una gran cantidad de comandos de Linux (incluido `g++` y `bash`).
+	* Ventajas: un programa para Linux y puede ser compilado en Windows prácticamente sin modificaciones.
 	* Desventajas: requiere una biblioteca de "emulación" de Linux sobre Windows por lo que la ejecución es más lenta.
 
 * **MinGW**: Es un intermedio entre las dos opciones anteriores: es un compilador g++ que puede crear binarios nativos de windows.
