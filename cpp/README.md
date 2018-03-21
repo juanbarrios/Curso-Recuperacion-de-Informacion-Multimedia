@@ -13,13 +13,13 @@ En Ubuntu instalar el package: `apt-get install libopencv-dev`
 	* Ventajas: se obtienen aplicaciones nativas de Windows con posibilidad de usar GPU.
 	* Desventajas: el compilador (llamado `cl`) no cumple con C++11 y utiliza API exclusiva de Microsoft por lo se vuelve difícil lograr que el mismo programa compile en Windows y Linux.
 	* La distribución oficial de OpenCV incluye las DLL para Visual Studio:
-		1. Entra a `https://opencv.org/releases.html`, descargar `opencv-3.4.1-vc14_vc15.exe` y descomprimir en `C:\[ZZZ]\opencv`
+		1. Entrar a `https://opencv.org/releases.html`, descargar `opencv-3.4.1-vc14_vc15.exe` y descomprimir en `C:\[ZZZ]\opencv`
 		2. Las librerías están en `C:\[ZZZ]\opencv\build\x64\vc15\bin`. Agregar al PATH la ruta `C:\[ZZZ]\opencv\build\x64\vc15\bin`.
 		3. Agregar al PATH la ruta `C:\[ZZZ]\opencv\build\bin`. Si no se realiza este paso no se podrán leer archivos `.mp4` ya que los codecs están en `opencv_ffmpeg341.dll`.
 
 * **Cygwin**: Es un port de linux para windows que instala la mayoria de los comandos linux (incluido `g++` y `bash`).
-	* Ventajas: exactamente el mismo codigo fuente se puede compilar en linux y windows.
-	* Desventajas: requiere una biblioteca de "emulación" de linux sobre windows por lo que la ejecución es más lenta.
+	* Ventajas: un código fuente para Linux y puede ser compilado para Windows prácticamente sin modificaciones.
+	* Desventajas: requiere una biblioteca de "emulación" de Linux sobre Windows por lo que la ejecución es más lenta.
 
 * **MinGW**: Es un intermedio entre las dos opciones anteriores: es un compilador g++ que puede crear binarios nativos de windows.
 	* Ventajas: Con pocos ajustes el mismo código puede obtener una aplicación en Windows y Linux.
