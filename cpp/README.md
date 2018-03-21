@@ -21,8 +21,8 @@ En Ubuntu instalar el package: `apt-get install libopencv-dev`
 	* Ventajas: un programa para Linux y puede ser compilado en Windows prácticamente sin modificaciones.
 	* Desventajas: requiere una biblioteca de "emulación" de Linux sobre Windows por lo que la ejecución es más lenta.
 
-* **MinGW**: Es un intermedio entre las dos opciones anteriores: es un compilador g++ que puede crear binarios nativos de windows.
-	* Ventajas: Con pocos ajustes el mismo código puede obtener una aplicación en Windows y Linux.
+* **MinGW**: Es un intermedio entre las dos opciones anteriores: es un compilador `g++` que genera binarios nativos de Windows.
+	* Ventajas: Con pocos ajustes el mismo código fuente puede ser compilado en Windows y Linux.
 	* Desventajas: Tiene algunas diferencias en acceso al filesystem (como `scandir`, `mkdir`, `stat`, `realpath`), funciones de strings (como `vsnprintf`) y manejo de procesos (no existe `fork`, `waitpid`, `ioctl`).
 	* Para instalar **MinGW** lo más simple es a través de **MSYS2**, el cual es un entorno con comandos de Linux (bash, grep, find, etc.) que incluye un administrador de paquetes (`pacman`).
 		1. Descargar **MSYS2** desde http://www.msys2.org/ e instalarlo en `C:\msys64`
