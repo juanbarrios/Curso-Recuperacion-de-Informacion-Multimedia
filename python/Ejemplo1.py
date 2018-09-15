@@ -19,7 +19,7 @@ def mostrar_image(filename):
 print ("Usando OpenCV {} Python {}.{}.{}".format(cv2.__version__, sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
 
 if len(sys.argv) < 2:
-    print ("Modo de uso: {} [filename]".format(sys.argv[0]))
+    print ("Uso: {} [filename]".format(sys.argv[0]))
     sys.exit(1)
 
 filename = sys.argv[1]

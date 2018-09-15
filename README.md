@@ -1,6 +1,6 @@
 # Recuperación de Información Multimedia
 
-Ejemplos para el curso CC5213
+Ejemplos para el curso Recuperación de Información Multimedia
 
 # Ejemplos para C++
 
