@@ -19,13 +19,11 @@ def mostrar_image(filename):
 print ("Usando OpenCV {} Python {}.{}.{}".format(cv2.__version__, sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
 
 if len(sys.argv) < 2:
-    print ("CC5213 - Ejemplo 1")
-    print ("Uso: {} [filename]".format(sys.argv[0]))
+    print ("Modo de uso: {} [filename]".format(sys.argv[0]))
     sys.exit(1)
 
 filename = sys.argv[1]
-
 mostrar_image(filename)
-print ("Presione una tecla para salir...")
+print ("Presione una tecla...")
 cv2.waitKey(0)
 cv2.destroyAllWindows()
