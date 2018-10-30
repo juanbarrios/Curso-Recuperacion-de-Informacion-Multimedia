@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "util.hpp"
+namespace {
 
 class ParametrosModificar {
 public:
@@ -38,9 +39,9 @@ public:
 			std::cout << nombre << "=" << parametro << std::endl;
 		}
 	}
-	double desde_x = 0.42, desde_y = 0.42;
-	double hasta_x = 0.48, hasta_y = 0.48;
-	float mult_real = 5.0, mult_imaginaria = 5.0;
+	double desde_x = 0.12, desde_y = 0.12;
+	double hasta_x = 0.28, hasta_y = 0.28;
+	float mult_real = 100.0, mult_imaginaria = 10.0;
 };
 
 void modificarFrecuencias(cv::Mat &frec_complex, const ParametrosModificar &param) {
@@ -48,10 +49,16 @@ void modificarFrecuencias(cv::Mat &frec_complex, const ParametrosModificar &para
 	int hy = std::round(frec_complex.rows * param.hasta_x);
 	int dx = std::round(frec_complex.cols * param.desde_y);
 	int hx = std::round(frec_complex.cols * param.hasta_y);
+	//ciclo sobre un rango de frecuencias
 	for (int i = dy; i < hy; ++i) {
 		for (int j = dx; j < hx; ++j) {
-			frec_complex.at<float>(i, j, 0) *= param.mult_real;
-			frec_complex.at<float>(i, j, 1) *= param.mult_imaginaria;
+			//obtener el peso de esa frecuencia
+			cv::Vec2f vals = frec_complex.at<cv::Vec2f>(i, j);
+			//modificar el peso
+			vals[0] *= param.mult_real;
+			vals[1] *= param.mult_imaginaria;
+			//actualizar el peso de esa frecuencia
+			frec_complex.at<cv::Vec2f>(i, j) = vals;
 		}
 	}
 }
@@ -122,6 +129,8 @@ void ejemplo(const std::string &filename) {
 	}
 	capture.release();
 	cv::destroyAllWindows();
+}
+
 }
 
 int main(int argc, char** argv) {
