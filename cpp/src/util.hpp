@@ -1,5 +1,4 @@
-#ifndef UTIL_HPP
-#define UTIL_HPP
+#pragma once
 
 #include <opencv2/videoio.hpp>
 #include <string>
@@ -21,4 +20,5 @@ cv::VideoCapture abrir_video(const std::string &filename);
 
 std::vector<std::string> leer_lineas_archivo(const std::string &filename);
 
-#endif
+std::vector<std::string> listar_archivos(const std::string &dirname);
+

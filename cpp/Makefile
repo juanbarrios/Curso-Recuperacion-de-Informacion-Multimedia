@@ -7,8 +7,8 @@ CFLAGS += -O3
 #CFLAGS += -O0 -ggdb
 
 #usar opencv
-CFLAGS  += $(shell pkg-config --cflags opencv)
-LDFLAGS += $(shell pkg-config --libs   opencv)
+CFLAGS  += $(shell pkg-config --cflags opencv fftw)
+LDFLAGS += $(shell pkg-config --libs   opencv fftw)
 
 ##configurar las rutas de instalacion de opencv
 #CFLAGS  += -I[ruta al opencv/include]
@@ -20,8 +20,8 @@ LDFLAGS += $(shell pkg-config --libs   opencv)
 ########## archivos necesarios para compilar ##########
 
 EJEMPLOS_CPP := $(sort $(wildcard src/Ejemplo*.cpp))
-UTIL_CPP     := $(sort $(wildcard src/util*.cpp))
-UTIL_HEADERS := $(sort $(wildcard src/util*.hpp))
+UTIL_CPP     := $(sort $(wildcard src/util*.cpp) src/Mfcc.cpp)
+UTIL_HEADERS := $(sort $(wildcard src/util*.hpp) src/Mfcc.hpp)
 
 ########## archivos generados ##########
 
@@ -41,7 +41,7 @@ all: $(EJEMPLOS_BIN)
 
 #para un ejecutable se requiere el object correspondiente mas los utils 
 build/Ejemplo%: build/object/Ejemplo%.o $(UTIL_HEADERS) $(UTIL_O)
-	g++ $^ -o $@ $(LDFLAGS)
+	g++ $< -o $@ $(UTIL_O) $(LDFLAGS)
 
 #para generar un object se requiere el fuente correspondiente mas los headers
 build/object/%.o: src/%.cpp $(UTIL_HEADERS)

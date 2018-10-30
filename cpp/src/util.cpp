@@ -1,8 +1,10 @@
 #include "util.hpp"
 
+#include <dirent.h>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <sys/stat.h>
+#include <algorithm>
 #include <cstddef>
 #include <fstream>
 #include <iostream>
@@ -68,6 +70,7 @@ cv::VideoCapture abrir_video(const std::string &filename) {
 			//leer el primer frame
 			cv::Mat frame;
 			capture.read(frame);
+			std::cout << "video " << frame.size << std::endl;
 		}
 	}
 	if (!capture.isOpened()) {
@@ -107,4 +110,52 @@ std::vector<std::string> leer_lineas_archivo(const std::string &filename) {
 		lines.push_back(line);
 	}
 	return lines;
+}
+
+void agregar_archivo(const std::string &dirname, const std::string &name, std::vector<std::string> &list) {
+	std::string fullpath = dirname + "/" + name;
+#if defined WIN32 || defined _WIN32
+	struct stat64 st;
+	int status = stat64(fullpath.c_str(), &st);
+#elif defined __linux || defined __linux__
+	struct stat st;
+	int status = stat(fullpath.c_str(), &st);
+#endif
+	if (status == 0 && S_ISREG(st.st_mode)) {
+		list.push_back(fullpath);
+	}
+}
+
+std::vector<std::string> listar_archivos(const std::string &dirname) {
+	std::vector<std::string> list;
+#if defined WIN32 || defined _WIN32
+	DIR *dp = opendir(dirname.c_str());
+	if (dp == NULL) {
+		std::cout << "error abriendo " << dirname << std::endl;
+		return list;
+	}
+	struct dirent *dir_entry;
+	while ((dir_entry = readdir(dp)) != NULL) {
+		std::string name(dir_entry->d_name);
+		agregar_archivo(dirname, name, list);
+	}
+	if (closedir(dp) != 0) {
+		std::cout << "error cerrando " << dirname << std::endl;
+	}
+#elif defined __linux || defined __linux__
+	struct dirent **namelist = NULL;
+	int len = scandir(dirname.c_str(), &namelist, NULL, NULL);
+	if (len < 0) {
+		std::cout << "error abriendo " << dirname << std::endl;
+		return list;
+	}
+	for (int i = 0; i < len; ++i) {
+		std::string name(namelist[i]->d_name);
+		agregar_archivo(dirname, name, list);
+		free(namelist[i]);
+	}
+	free(namelist);
+#endif
+	std::sort(list.begin(), list.end());
+	return list;
 }
