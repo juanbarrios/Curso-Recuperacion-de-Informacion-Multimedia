@@ -14,9 +14,11 @@ bool existe_archivo(const std::string &filename);
 
 std::string basename(const std::string &filename);
 
-void mostrar_frame(const std::string &window_name, const cv::Mat &imagen, bool valorAbsoluto, bool escalarMin0Max255);
+void mostrar_imagen(const std::string &window_name, const cv::Mat &imagen, bool valorAbsoluto, bool escalarMin0Max255);
 
 cv::VideoCapture abrir_video(const std::string &filename);
+
+void agregar_texto(cv::Mat &imagen, int center_x, int center_y, const std::string &texto);
 
 std::vector<std::string> leer_lineas_archivo(const std::string &filename);
 

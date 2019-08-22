@@ -1,4 +1,6 @@
-﻿# OpenCV para C++
+﻿# CC5213 - Recuperación de Información Multimedia
+
+# Usar OpenCV para C++
 
 ## Versión binaria para Linux
 
@@ -7,19 +9,19 @@ En Ubuntu instalar el package: `apt-get install libopencv-dev`
 ## Versión binaria para Windows
 
 * Primero se debe escoger un compilador de C++.
-	* En C++ no es posible mezclar librerías generadas por compiladores diferentes, es decir, al compilar un programa con `g++` no es posible linkear con librerías generadas por `cl` (Visual Studio). Esto se debe a que cada compilador usa un "name mangling" diferente para guardar las funciones (como dato extra, en general sí es posible mezclar compiladores usando C ya que no existe overloading de funciones).
+	* En C++ no es posible mezclar librerías generadas por compiladores diferentes, es decir, al compilar un programa con `g++` no es posible linkear con librerías generadas por `cl` (Visual Studio). Esto se debe a que cada compilador usa un "name mangling" diferente para guardar las funciones. Notar que en C sí es posible mezclar compiladores porque no existe overload de funciones ni name mangling.
 
 * **Visual Studio**: Compilador oficial para Windows.
 	* Ventajas: se obtienen aplicaciones nativas de Windows con posibilidad de usar GPU.
 	* Desventajas: el compilador (llamado `cl`) no cumple con C++11 y utiliza API exclusiva de Microsoft por lo se vuelve difícil lograr que el mismo programa compile en Windows y Linux.
 	* La distribución oficial de OpenCV incluye las DLL para Visual Studio:
-		1. Entrar a `https://opencv.org/releases.html`, descargar `opencv-3.4.1-vc14_vc15.exe` y descomprimir en `C:\[ZZZ]\opencv`
+		1. Entrar a `https://opencv.org/releases.html`, descargar `opencv-3.4.7-vc14_vc15.exe` y descomprimir en `C:\[ZZZ]\opencv`
 		2. Las librerías están en `C:\[ZZZ]\opencv\build\x64\vc15\bin`. Agregar al PATH la ruta `C:\[ZZZ]\opencv\build\x64\vc15\bin`.
 		3. Agregar al PATH la ruta `C:\[ZZZ]\opencv\build\bin`. Si no se realiza este paso no se podrán leer archivos `.mp4` ya que los codecs están en `opencv_ffmpeg341.dll`.
 
 * **Cygwin**: Es un port de Linux para Windows que incluye una gran cantidad de comandos de Linux (incluido `g++` y `bash`).
 	* Ventajas: un programa para Linux y puede ser compilado en Windows prácticamente sin modificaciones.
-	* Desventajas: requiere una biblioteca de "emulación" de Linux sobre Windows por lo que la ejecución es más lenta.
+	* Desventajas: requiere una biblioteca de "emulación" de Linux sobre Windows lo que hace más lenta la ejecución.
 
 * **MinGW**: Es un intermedio entre las dos opciones anteriores: es un compilador `g++` que genera binarios nativos de Windows.
 	* Ventajas: Con pocos ajustes el mismo código fuente puede ser compilado en forma nativa para Windows y Linux.
@@ -80,7 +82,7 @@ Si se instaló en un directorio fuera de `/usr/` es posible que en tiempo de eje
 
 Para resolver dependencias faltantes en tiempo de ejecución hay dos opciones:
   * Opción 1: Agregar el directorio `$HOME/mi_opencv/lib` a la variable de entorno `LD_LIBRARY_PATH` para que el sistema operativo busque ahí librerías requeridas para la ejecución.
-  * Opción 2: Compilar con el parámetro `-Wl,-rpath,$HOME/mi_opencv/lib` para que el linker además del nombre incluya el path compmleto de la libreria usada.
+  * Opción 2: Compilar con el parámetro `-Wl,-rpath,$HOME/mi_opencv/lib` para que el linker incluya el nombre de la librería con el path completo.
 
 ## Compilar fuentes de OpenCV en Windows
 
@@ -98,16 +100,16 @@ Para compilar un código fuente en C++ usualmente se requieren dos pasos:
 
 * Paso 1: Convertir código fuente en código binario (object file). Para cada .cpp ejecutar: `g++ -c -o archivo1.o archivo1.cpp`.
  
-    * El compilador lee el fuente en el `.cpp` y resuelve todas las instrucciones `#include <librería.hpp>`
+    * El compilador lee el fuente en el `.cpp` y resuelve todas las instrucciones `#include ...`
     * Con `-I`ruta se configuran lugares para buscar headers además de `/usr/include/`
     * Agregar `-std=c++11` para usar C++11
     * Agregar `-Wall` para warnings
     * Si el código fuente no tiene problemas se creará un object file `.o` con la versión binaria del fuente.
 
 * Paso 2: Linkeo para crear ejecutable o librería
-    * Se reúnen todos los object file y se asocian cada llamada a método con su implementación, ya sea entre object files o con librerías externas (linkage)
-    * Para un ejecutable, debe existir un método `main()` entre todos los `.o`: `g++ -o ejemplo archivo1.o archivo2.o`
-    * Para una librería (`.so`, `.dll`): `g++ -shared -o libejemplo.so archivo1.o archivo2.o`
+    * Se reúnen todos los object file y se asocian cada llamada a un método con su implementación, ya sea entre object files o con librerías externas (linkage)
+    * Para crear un ejecutable, debe existir un único método `main()` entre todos los `.o`: `g++ -o ejemplo archivo1.o archivo2.o`
+    * Para crear una librería compartida (`.so`, `.dll`): `g++ -shared -o libejemplo.so archivo1.o archivo2.o`
     * Con `-L`ruta se configuran lugares para buscar librerías además de `/usr/lib/`.
     * Con `-l`nombre se declaran las librerías externas a buscar (se buscará `libnombre.so` en las rutas definidas).
 
@@ -115,8 +117,8 @@ Es posible compilar y linkear en un solo comando: `g++ -o ejemplo -Idir *.cpp -L
 
 El utilitario `pkg-config` entrega los parámetros de compilación al usar librerías externas.
 
-   * Compilacion: `pkg-config --cflags libreria1 libreria2`
-   * Linkeo: `pkg-config --libs libreria1 libreria2`
+   * Compilacion: `pkg-config --cflags opencv`
+   * Linkeo: `pkg-config --libs opencv`
 
 Usualmente se crea un archivo de nombre `Makefile` con las instrucciones de compilación que luego se ejecuta con el comando `make`.
 
@@ -124,4 +126,4 @@ Usualmente se crea un archivo de nombre `Makefile` con las instrucciones de comp
 
 Otra opción es utilizar un IDE. Los más usados para C++ son: Codeblocks, Eclipse CDT, QtCreator.
 
-Eclipse CDT se puede descargar desde http://www.eclipse.org/ide/ versión C/C++. (Descargar el `.tar.gz` o `.zip` y descomprimir). Además es útil instalar un plugin para usar pkg-config. Ver https://marketplace.eclipse.org/content/pkg-config-support-eclipse-cdt
+Eclipse CDT se puede descargar desde http://www.eclipse.org/ide/ versión C/C++. (Descargar el `.tar.gz` o `.zip` y descomprimir). Además es útil instalar un plugin para usar `pkg-config` como https://marketplace.eclipse.org/content/pkg-config-support-eclipse-cdt

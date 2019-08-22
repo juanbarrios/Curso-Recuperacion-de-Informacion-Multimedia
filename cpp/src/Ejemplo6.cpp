@@ -223,11 +223,14 @@ const double pi = 3.14159265358979323846;
 
 std::vector<short> generateSamplesAndSave(int samplerate) {
 	std::vector<short> audio_samples;
-	double hertz = 1000;
-	double amplitud = 10000;
+	double hertz1 = 500;
+	double hertz2 = 4000;
+	double amplitud = 20000;
 	for (int j = 0; j < 10; ++j) {
 		for (int i = 0; i < samplerate / 2; ++i) {
-			short sample = (short) (amplitud * std::cos(i * 2 * pi / samplerate * hertz));
+			short sample1 = (short) (amplitud * std::cos(i * 2 * pi / samplerate * hertz1));
+			short sample2 = (short) (amplitud * std::cos(i * 2 * pi / samplerate * hertz2));
+			short sample = sample1+sample2;
 			audio_samples.push_back(sample);
 		}
 	}

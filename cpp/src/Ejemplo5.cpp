@@ -9,56 +9,37 @@
 #include <vector>
 
 #include "util.hpp"
+
 namespace {
 
-class ParametrosModificar {
-public:
-	void modificar_parametros(char key) {
-		actualizar_pos(key, 'a', 'z', desde_x, "desde_x");
-		actualizar_pos(key, 's', 'x', desde_y, "desde_y");
-		actualizar_pos(key, 'd', 'c', hasta_x, "hasta_x");
-		actualizar_pos(key, 'f', 'v', hasta_y, "hasta_y");
-		actualizar_mult(key, 'i', 'k', mult_real, "mult_real");
-		actualizar_mult(key, 'o', 'l', mult_imaginaria, "mult_imaginaria");
-	}
-	void actualizar_pos(char key, char key_subir, char key_bajar, double &parametro, const std::string &nombre) {
-		if (key == key_subir) {
-			parametro = std::min(1.0, parametro + 0.01);
-			std::cout << nombre << "=" << parametro << std::endl;
-		} else if (key == key_bajar) {
-			parametro = std::max(0.0, parametro - 0.01);
-			std::cout << nombre << "=" << parametro << std::endl;
-		}
-	}
-	void actualizar_mult(char key, char key_subir, char key_bajar, float &parametro, const std::string &nombre) {
-		if (key == key_subir) {
-			parametro = parametro + 1.0;
-			std::cout << nombre << "=" << parametro << std::endl;
-		} else if (key == key_bajar) {
-			parametro = std::max(0.0, parametro - 1.0);
-			std::cout << nombre << "=" << parametro << std::endl;
-		}
-	}
-	double desde_x = 0.12, desde_y = 0.12;
-	double hasta_x = 0.28, hasta_y = 0.28;
-	float mult_real = 100.0, mult_imaginaria = 10.0;
-};
+int desde_x = 4, desde_y = 20;
+int size_x = 8, size_y = 8;
+int delta_pos = 5;
+int mult_real = 100, mult_imaginaria = 10;
+int delta_mult = 2;
 
-void modificarFrecuencias(cv::Mat &frec_complex, const ParametrosModificar &param) {
-	int dy = std::round(frec_complex.rows * param.desde_x);
-	int hy = std::round(frec_complex.rows * param.hasta_x);
-	int dx = std::round(frec_complex.cols * param.desde_y);
-	int hx = std::round(frec_complex.cols * param.hasta_y);
+void modificar_param(char key, char key_subir, char key_bajar, int &parametro, int delta, const std::string &nombre) {
+	if (key == key_subir) {
+		parametro += delta;
+		std::cout << nombre << "=" << parametro << std::endl;
+	} else if (key == key_bajar) {
+		if (parametro - delta > 0)
+			parametro -= delta;
+		std::cout << nombre << "=" << parametro << std::endl;
+	}
+}
+
+void modificarFrecuencias(cv::Mat &frec_complex) {
 	//ciclo sobre un rango de frecuencias
-	for (int i = dy; i < hy; ++i) {
-		for (int j = dx; j < hx; ++j) {
+	for (int i = desde_y; i < desde_y + size_y; ++i) {
+		for (int j = desde_x; j < desde_x + size_x; ++j) {
 			//obtener el peso de esa frecuencia
-			cv::Vec2f vals = frec_complex.at<cv::Vec2f>(i, j);
+			cv::Vec2f complex_value = frec_complex.at<cv::Vec2f>(i, j);
 			//modificar el peso
-			vals[0] *= param.mult_real;
-			vals[1] *= param.mult_imaginaria;
+			complex_value[0] *= mult_real;
+			complex_value[1] *= mult_imaginaria;
 			//actualizar el peso de esa frecuencia
-			frec_complex.at<cv::Vec2f>(i, j) = vals;
+			frec_complex.at<cv::Vec2f>(i, j) = complex_value;
 		}
 	}
 }
@@ -68,7 +49,9 @@ cv::Mat imagenToComplex(const cv::Mat &gris) {
 	cv::Mat real;
 	gris.convertTo(real, CV_32F);
 	//la parte imaginaria son ceros
-	cv::Mat imag = cv::Mat::zeros(gris.size(), CV_32FC1);
+	cv::Mat imag;
+	imag.create(gris.size(), CV_32FC1);
+	imag = 0;
 	//unir parte real e imaginaria
 	cv::Mat planos[] = { real, imag };
 	cv::Mat complex;
@@ -97,7 +80,6 @@ void visualizar(const cv::Mat &frec_complex) {
 
 void ejemplo(const std::string &filename) {
 	cv::VideoCapture capture = abrir_video(filename);
-	ParametrosModificar param;
 	cv::Mat frame, frame_gris, output_frame, output_frame_gris;
 	while (capture.grab()) {
 		if (!capture.retrieve(frame))
@@ -111,7 +93,7 @@ void ejemplo(const std::string &filename) {
 		cv::Mat frecuencias_complex;
 		cv::dft(frame_complex, frecuencias_complex, cv::DFT_COMPLEX_OUTPUT);
 		//modificar las frecuencias de la DFT
-		modificarFrecuencias(frecuencias_complex, param);
+		modificarFrecuencias(frecuencias_complex);
 		//visualizar las frecuencias
 		visualizar(frecuencias_complex);
 		//invertir la DFT
@@ -125,7 +107,12 @@ void ejemplo(const std::string &filename) {
 			key = cv::waitKey(0) & 0xFF;
 		if (key == 'q' or key == 27)
 			break;
-		param.modificar_parametros(key);
+		modificar_param(key, 'a', 'z', desde_x, delta_pos, "desde_x");
+		modificar_param(key, 's', 'x', desde_y, delta_pos, "desde_y");
+		modificar_param(key, 'd', 'c', size_x, delta_pos, "size_x");
+		modificar_param(key, 'f', 'v', size_y, delta_pos, "size_y");
+		modificar_param(key, 'i', 'k', mult_real, delta_mult, "mult_real");
+		modificar_param(key, 'o', 'l', mult_imaginaria, delta_mult, "mult_imaginaria");
 	}
 	capture.release();
 	cv::destroyAllWindows();

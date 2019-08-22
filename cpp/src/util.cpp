@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 #include <sys/stat.h>
 #include <algorithm>
 #include <cstddef>
@@ -58,6 +59,23 @@ std::string basename(const std::string &filename) {
 	return (pos2 == std::string::npos) ? name : name.substr(0, pos2);
 
 }
+
+void mostrar_imagen(const std::string &window_name, const cv::Mat &imagen, bool valorAbsoluto, bool escalarMin0Max255) {
+	cv::Mat imagen_abs;
+	if (valorAbsoluto) {
+		imagen_abs = cv::abs(imagen);
+	} else {
+		imagen_abs = imagen;
+	}
+	cv::Mat imagen_norm;
+	if (escalarMin0Max255) {
+		cv::normalize(imagen_abs, imagen_norm, 0, 255, cv::NORM_MINMAX, CV_8U);
+	} else {
+		imagen_norm = imagen_abs;
+	}
+	cv::imshow(window_name, imagen_norm);
+}
+
 cv::VideoCapture abrir_video(const std::string &filename) {
 	cv::VideoCapture capture;
 	if (existe_archivo(filename)) {
@@ -80,20 +98,16 @@ cv::VideoCapture abrir_video(const std::string &filename) {
 	return capture;
 }
 
-void mostrar_frame(const std::string &window_name, const cv::Mat &imagen, bool valorAbsoluto, bool escalarMin0Max255) {
-	cv::Mat imagen_abs;
-	if (valorAbsoluto) {
-		imagen_abs = cv::abs(imagen);
-	} else {
-		imagen_abs = imagen;
-	}
-	cv::Mat imagen_norm;
-	if (escalarMin0Max255) {
-		cv::normalize(imagen_abs, imagen_norm, 0, 255, cv::NORM_MINMAX, CV_8U);
-	} else {
-		imagen_norm = imagen_abs;
-	}
-	cv::imshow(window_name, imagen_norm);
+void agregar_texto(cv::Mat &imagen, int center_x, int center_y, const std::string &texto) {
+	static int fontFace = cv::FONT_HERSHEY_PLAIN;
+	static double fontScale = 1;
+	static int thickness = 1;
+	int baseline = 0;
+	cv::Size textSize = cv::getTextSize(texto, fontFace, fontScale, thickness, &baseline);
+	cv::Point p(center_x - textSize.width / 2, center_y + textSize.height);
+	cv::Rect rect(p.x - 1, p.y - textSize.height - 1, textSize.width + 2, textSize.height + 2);
+	cv::rectangle(imagen, rect, cv::Scalar::all(0), -1);
+	cv::putText(imagen, texto, p, fontFace, fontScale, cv::Scalar::all(255), thickness);
 }
 
 std::vector<std::string> leer_lineas_archivo(const std::string &filename) {
@@ -112,6 +126,9 @@ std::vector<std::string> leer_lineas_archivo(const std::string &filename) {
 	return lines;
 }
 
+namespace {
+//se usa un namespace anónimo para funciones privadas visibles solo dentro de este archivo
+
 void agregar_archivo(const std::string &dirname, const std::string &name, std::vector<std::string> &list) {
 	std::string fullpath = dirname + "/" + name;
 #if defined WIN32 || defined _WIN32
@@ -124,6 +141,8 @@ void agregar_archivo(const std::string &dirname, const std::string &name, std::v
 	if (status == 0 && S_ISREG(st.st_mode)) {
 		list.push_back(fullpath);
 	}
+}
+
 }
 
 std::vector<std::string> listar_archivos(const std::string &dirname) {
@@ -159,3 +178,4 @@ std::vector<std::string> listar_archivos(const std::string &dirname) {
 	std::sort(list.begin(), list.end());
 	return list;
 }
+

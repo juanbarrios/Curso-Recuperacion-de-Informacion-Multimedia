@@ -19,10 +19,11 @@ void ejemplo(const std::string &filename) {
 	cv::Mat imagen_gris;
 	cv::cvtColor(imagen_color, imagen_gris, cv::COLOR_BGR2GRAY);
 	cv::Mat imagen_bin;
-	double threshold = cv::threshold(imagen_gris, imagen_bin, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+	int threshold = cv::threshold(imagen_gris, imagen_bin, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
 	std::string window_name = basename(filename);
 	cv::imshow(window_name, imagen_color);
 	cv::imshow(window_name + " GRIS", imagen_gris);
+	agregar_texto(imagen_bin, imagen_bin.cols / 2, 2, "OTSU=" + std::to_string(threshold));
 	cv::imshow(window_name + " BINARIA", imagen_bin);
 	std::cout << window_name << ": size=" << imagen_color.size() << " threshold_otsu=" << threshold << std::endl;
 }
