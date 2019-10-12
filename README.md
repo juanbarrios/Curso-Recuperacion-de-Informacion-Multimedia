@@ -1,6 +1,7 @@
-# Recuperación de Información Multimedia
+# Curso Recuperación de Información Multimedia
+## Multimedia Information Retrieval (MIR)
 
-Ejemplos para el curso Recuperación de Información Multimedia
+Materia docente para el curso Recuperación de Información Multimedia
 
 # Ejemplos para C++
 
