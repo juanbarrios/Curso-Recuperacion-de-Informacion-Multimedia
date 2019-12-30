@@ -18,7 +18,7 @@ El material docentel del curso está dividido en cuatro partes.
 
  1. **Introducción y Preliminares**
    * [0-Introduccion](0-Introduccion.pdf)
-   * [1a-C++ y OpenCV](1a-C++ y OpenCV.pdf)
+   * [1a-C++ y OpenCV](1a-C%2B%2B y OpenCV.pdf)
    * [1b-ProcesamientoDeImagenes](1b-ProcesamientoDeImagenes.pdf)
    * [1c-DeteccionBordes](1c-DeteccionBordes.pdf)
    * [1d-DeteccionDeLineas](1d-DeteccionDeLineas.pdf)
