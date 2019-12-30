@@ -11,7 +11,7 @@ En los sistemas de recuperación de información multimedia destacan dos fases p
 
 Este curso estudia ambas fases, esto es, técnicas de representación de contenido multimedia (específicamente audio, imagen, video y texto) y algoritmos de búsqueda eficientes y efectivos para grandes cantidades de datos.
 
-# Material Docente
+## Material Docente
 
 El material docente del curso está dividido en cuatro partes.
 
@@ -19,12 +19,12 @@ El material docente del curso está dividido en cuatro partes.
      * [1a-Introducción MIR](slides/1a-IntroduccionMIR.pdf)
      * [1b-C++ y OpenCV](slides/1b-C%2B%2ByOpenCV.pdf)
      * [1c-Procesamiento de Imágenes](slides/1c-ProcesamientoDeImagenes.pdf)
-     * [1d-Detección Bordes](slides/1d-DeteccionDeBordes.pdf)
+     * [1d-Detección de Bordes](slides/1d-DeteccionDeBordes.pdf)
      * [1e-Detección de Líneas](slides/1e-DeteccionDeLineas.pdf)
      * [1f-Dominio de Frecuencias](slides/1f-DominioDeFrecuencias.pdf)
 
  2. **Descripción de Contenido Multimedia**
-     * [2a-Descriptores](slides/2a-Descriptores.pdf)
+     * [2a-Descriptores de Contenido](slides/2a-Descriptores.pdf)
      * [2b-Descriptores Globales Gris](slides/2b-DescriptoresGlobalesGris.pdf)
      * [2c-Descriptores Globales Color](slides/2c-DescriptoresGlobalesColor.pdf)
      * [2d-Descriptores de Audio](slides/2d-DescriptoresDeAudio.pdf)
@@ -46,16 +46,16 @@ El material docente del curso está dividido en cuatro partes.
      * [4e-Deep Learning](slides/4e-DeepLearning.pdf)
 
 
-# Código Fuente
+## Código Fuente
 
-    * Código fuente [para C++ 11](ejemplos/cpp/):
+Código fuente [para C++ 11](ejemplos/cpp/):
 
-        * En un terminal cambiar al directorio donde está el archivo de `Makefile` y escribir `make`.
-        * Ejecutar:
-            * Linux: `build/Ejemplo1`
-            * Windows: `build\Ejemplo1.exe`
+	* En un terminal cambiar al directorio donde está el archivo de `Makefile` y escribir `make`.
+	* Ejecutar:
+		* Linux: `build/Ejemplo1`
+		* Windows: `build\Ejemplo1.exe`
 
-    * Código fuente [para Python 3](ejemplos/python/):
+Código fuente [para Python 3](ejemplos/python/):
 
-        * Los archivos `.py` se ejecutan desde un terminal con el comando `python`.
-        * Los archivos `.ipynb` deben ser abiertos con **Jupyter**.
+	* Los archivos `.py` se ejecutan desde un terminal con el comando `python`.
+	* Los archivos `.ipynb` deben ser abiertos con **Jupyter**.
