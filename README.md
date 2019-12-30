@@ -11,40 +11,39 @@ En los sistemas de recuperación de información multimedia destacan dos fases p
 
 Este curso estudia ambas fases, esto es, técnicas de representación de contenido multimedia (específicamente audio, imagen, video y texto) y algoritmos de búsqueda eficientes y efectivos para grandes cantidades de datos.
 
-
 # Material Docente
 
-El material docentel del curso está dividido en cuatro partes.
+El material docente del curso está dividido en cuatro partes.
 
- 1. **Introducción y Preliminares**
-   * [0-Introduccion](0-Introduccion.pdf)
-   * [1a-C++ y OpenCV](1a-C%2B%2B y OpenCV.pdf)
-   * [1b-ProcesamientoDeImagenes](1b-ProcesamientoDeImagenes.pdf)
-   * [1c-DeteccionBordes](1c-DeteccionBordes.pdf)
-   * [1d-DeteccionDeLineas](1d-DeteccionDeLineas.pdf)
-   * [1e-DominioDeFrecuencias](1e-DominioDeFrecuencias.pdf)
+ 1. **Preliminares**
+     * [0-Introduccion](0-Introduccion.pdf)
+     * [1a-C++ y OpenCV](1a-C%2B%2ByOpenCV.pdf)
+     * [1b-ProcesamientoDeImagenes](1b-ProcesamientoDeImagenes.pdf)
+     * [1c-DeteccionBordes](1c-DeteccionBordes.pdf)
+     * [1d-DeteccionDeLineas](1d-DeteccionDeLineas.pdf)
+     * [1e-DominioDeFrecuencias](1e-DominioDeFrecuencias.pdf)
 
  2. **Descripción de Contenido Multimedia**
-   * [2a-Descriptores](2a-Descriptores.pdf)
-   * [2b-DescriptoresGlobalesGris](2b-DescriptoresGlobalesGris.pdf)
-   * [2c-DescriptoresGlobalesColor](2c-DescriptoresGlobalesColor.pdf)
-   * [2d-DescriptoresAudio](2d-DescriptoresAudio.pdf)
-   * [2e-ProcesamientoDeVideos](2e-ProcesamientoDeVideos.pdf)
+     * [2a-Descriptores](2a-Descriptores.pdf)
+     * [2b-DescriptoresGlobalesGris](2b-DescriptoresGlobalesGris.pdf)
+     * [2c-DescriptoresGlobalesColor](2c-DescriptoresGlobalesColor.pdf)
+     * [2d-DescriptoresAudio](2d-DescriptoresAudio.pdf)
+     * [2e-ProcesamientoDeVideos](2e-ProcesamientoDeVideos.pdf)
 
  3. **Búsquedas por Similitud**
-   * [3a-BusquedasPorSimilitud](3a-BusquedasPorSimilitud.pdf)
-   * [3b-RepasoEstructurasDeDatos](3b-RepasoEstructurasDeDatos.pdf)
-   * [3c-IndicesMultidimensionales](3c-IndicesMultidimensionales.pdf)
-   * [3d-PCA](3d-PCA.pdf)
-   * [3e-IndicesMetricos](3e-IndicesMetricos.pdf)
-   * [3f-EvaluacionDeEfectividad](3f-EvaluacionDeEfectividad.pdf)
+     * [3a-BusquedasPorSimilitud](3a-BusquedasPorSimilitud.pdf)
+     * [3b-RepasoEstructurasDeDatos](3b-RepasoEstructurasDeDatos.pdf)
+     * [3c-IndicesMultidimensionales](3c-IndicesMultidimensionales.pdf)
+     * [3d-PCA](3d-PCA.pdf)
+     * [3e-IndicesMetricos](3e-IndicesMetricos.pdf)
+     * [3f-EvaluacionDeEfectividad](3f-EvaluacionDeEfectividad.pdf)
 
  4. **Métodos Avanzados**
-   * [4a-DescriptoresLocales](4a-DescriptoresLocales.pdf)
-   * [4b-Codebooks](4b-Codebooks.pdf)
-   * [4c-DescriptoresTexto](4c-DescriptoresTexto.pdf)
-   * [4d-RepasoMachineLearning](4d-RepasoMachineLearning.pdf)
-   * [4e-DeepLearning](4e-DeepLearning.pdf)
+     * [4a-DescriptoresLocales](4a-DescriptoresLocales.pdf)
+     * [4b-Codebooks](4b-Codebooks.pdf)
+     * [4c-DescriptoresTexto](4c-DescriptoresTexto.pdf)
+     * [4d-RepasoMachineLearning](4d-RepasoMachineLearning.pdf)
+     * [4e-DeepLearning](4e-DeepLearning.pdf)
 
 
 
