@@ -1,8 +1,6 @@
 # Curso Recuperación de Información Multimedia
 
-La *Recuperación de Información Multimedia*, en inglés [Multimedia Information Retrieval](https://en.wikipedia.org/wiki/Multimedia_information_retrieval) (MIR), estudia el problema de extraer y buscar información en archivos como imagen, audio, video, texto y, en general, cualquier documento no estructurado. 
-
-En los sistemas de Recuperación de Información Multimedia destacan dos fases principales:
+La *Recuperación de Información Multimedia*, [Multimedia Information Retrieval](https://en.wikipedia.org/wiki/Multimedia_information_retrieval) (MIR), estudia el problema de extraer y buscar información en imágenes, audio, videos, textos y, en general, cualquier documento no estructurado. En los sistemas de Recuperación de Información Multimedia destacan dos fases principales:
 
   1. **Representación de contenido** donde se extrae información relevante para describir el contenido de cada documento.
 
