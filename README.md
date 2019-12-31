@@ -46,13 +46,31 @@ El material docente del curso está dividido en cuatro partes.
 ## Código Fuente
 
 Código fuente [para C++ 11](ejemplos/cpp/):
-
 	* En un terminal cambiar al directorio donde está el archivo de `Makefile` y escribir `make`.
 	* Ejecutar:
 		* Linux: `build/Ejemplo1`
 		* Windows: `build\Ejemplo1.exe`
 
 Código fuente [para Python 3](ejemplos/python/):
-
 	* Los archivos `.py` se ejecutan desde un terminal con el comando `python`.
 	* Los archivos `.ipynb` deben ser abiertos con **Jupyter**.
+
+## Bibliografía
+
+ * Handbook of Multimedia Information Retrieval. Eidenberger. 2012.
+ * Modern Information Retrieval. Baeza-Yates, Ribeiro-Neto, 2011.
+ * Multimedia Retrieval. Blanken, de Vries, Blok, Feng. 2007.
+ * Foundations of Multidimensional and Metric Data Structures. Samet. 2006.
+ * Deep Learning with Python. Chollet. 2018.
+ * The Essential Guide to Image/Video Processing. Bovik. 2009.
+ * H.264 and MPEG-4 Video Compression. Richardson. 2003.
+ * Digital Image Processing. Gonzalez, Woods. 2008.
+ * Data Mining: The Textbook. Aggarwal. 2015.
+ * Similarity Search The Metric Space Approach. Zezula, Amato, Dohnal, Batko. 2006.
+ * Computer Vision. Algorithms and Applications. Szeliski. 2011.
+ * Deep Learning: A Practitioner's Approach. Patterson, Gibson. 2017.
+
+
+## Información del curso
+
+Este curso actualmente se dicta en el [Departmento de Ciencias de la Computación de la Universidad de Chile](https://www.dcc.uchile.cl/). Es un curso electivo de la carrera de ingeniería civil en computación y es tomado por estudiantes de pregrado de ingeniería (computación, eléctrica, industrial) y estudiantes de posgrado (magíster y doctorado en computación).
