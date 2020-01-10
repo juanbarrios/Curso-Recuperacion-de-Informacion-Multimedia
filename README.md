@@ -1,6 +1,17 @@
 # Curso Recuperación de Información Multimedia
 
-La *Recuperación de Información Multimedia*, [Multimedia Information Retrieval](https://en.wikipedia.org/wiki/Multimedia_information_retrieval) (MIR), estudia el problema de extraer y buscar información en imágenes, audio, videos, textos y, en general, cualquier documento no estructurado. En los sistemas de Recuperación de Información Multimedia destacan dos fases principales:
+ 1. [Introducción](#intro)
+ 2. [Material Docente](#material)
+ 3. [Código Fuente](#codigo)
+ 4. [Bibliografía](#bibliografia)
+ 5. [Información del curso](#info)
+ 
+
+## Introducción <a name="intro"></a>
+
+La *Recuperación de Información Multimedia*, [Multimedia Information Retrieval](https://en.wikipedia.org/wiki/Multimedia_information_retrieval) (MIR), estudia el problema de extraer y buscar información en imágenes, audio, videos, textos y, en general, cualquier documento no estructurado.
+
+En los sistemas de Recuperación de Información Multimedia destacan dos fases principales:
 
   1. **Representación de contenido** donde se extrae información relevante para describir el contenido de cada documento.
 
@@ -8,7 +19,7 @@ La *Recuperación de Información Multimedia*, [Multimedia Information Retrieval
 
 Este curso estudia ambas fases, esto es, técnicas de representación de contenido para audio, imagen, video y texto, y varios algoritmos de búsqueda eficientes y efectivos para grandes cantidades de datos.
 
-## Material Docente
+## Material Docente <a name="material"></a>
 
 El material docente del curso está dividido en cuatro partes.
 
@@ -43,7 +54,7 @@ El material docente del curso está dividido en cuatro partes.
      * [4e-Deep Learning](slides/4e-DeepLearning.pdf)
 
 
-## Código Fuente
+## Código Fuente <a name="codigo"></a>
 
 Código fuente [para C++ 11](ejemplos/cpp/):
 	* En un terminal cambiar al directorio donde está el archivo de `Makefile` y escribir `make`.
@@ -55,7 +66,7 @@ Código fuente [para Python 3](ejemplos/python/):
 	* Los archivos `.py` se ejecutan desde un terminal con el comando `python`.
 	* Los archivos `.ipynb` deben ser abiertos con **Jupyter**.
 
-## Bibliografía
+## Bibliografía <a name="bibliografia"></a>
 
  * Handbook of Multimedia Information Retrieval. Eidenberger. 2012.
  * Modern Information Retrieval. Baeza-Yates, Ribeiro-Neto, 2011.
@@ -71,6 +82,8 @@ Código fuente [para Python 3](ejemplos/python/):
  * Deep Learning: A Practitioner's Approach. Patterson, Gibson. 2017.
 
 
-## Información del curso
+## Información del curso <a name="info"></a>
 
-Este curso actualmente se dicta en el [Departmento de Ciencias de la Computación de la Universidad de Chile](https://www.dcc.uchile.cl/). Es un curso electivo de la carrera de ingeniería civil en computación y es tomado por estudiantes de pregrado de ingeniería (computación, eléctrica, industrial) y estudiantes de posgrado (magíster y doctorado en computación).
+El curso CC5213 se dicta en el [Departmento de Ciencias de la Computación de la Universidad de Chile](https://www.dcc.uchile.cl/). Es un curso electivo de la carrera de ingeniería civil en computación y es tomado por estudiantes de pregrado de ingeniería (computación, eléctrica, industrial) y estudiantes de posgrado (magíster y doctorado en computación). 
+
+Parte del material de este curso también se usa en el curso Recuperación de Información del [Diplomado de Ciencia de Datos](https://www.dcc.uchile.cl/datos).
