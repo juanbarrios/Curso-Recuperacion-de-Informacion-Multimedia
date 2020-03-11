@@ -3,14 +3,12 @@
 # parametros para compilación: usar C++ 11 y con todos los warnings
 CFLAGS += -std=c++11 -Wall -Wextra
 
-#compilar con optimizaciones
+#compilar con optimizaciones. Para debug poner -O0 -ggdb
 CFLAGS += -O3
-#compilar con información de debug
-#CFLAGS += -O0 -ggdb
 
 #usar opencv para compilación y linkeo
-CFLAGS  += $(shell pkg-config --cflags opencv fftw)
-LDFLAGS += $(shell pkg-config --libs   opencv fftw)
+CFLAGS  += $(shell pkg-config --cflags opencv4 fftw3 Qt5Widgets)
+LDFLAGS += $(shell pkg-config --libs   opencv4 fftw3 Qt5Widgets)
 
 ##si no funciona pkg-config se deben configurar las rutas de instalacion de opencv
 #CFLAGS  += -I[ruta al opencv/include]
@@ -21,14 +19,14 @@ LDFLAGS += $(shell pkg-config --libs   opencv fftw)
 
 ########## archivos a compilar ##########
 
-EJEMPLOS_CPP := $(sort $(wildcard src/Ejemplo*.cpp))
-UTIL_CPP     := $(sort $(wildcard src/util*.cpp) src/Mfcc.cpp)
-UTIL_HEADERS := $(sort $(wildcard src/util*.hpp) src/Mfcc.hpp)
+EJEMPLOS_CPP  := $(sort $(wildcard src/Ejemplo*.cpp))
+UTILS_CPP     := $(wildcard src/utils/*.cpp)
+UTILS_HEADERS := $(wildcard src/utils/*.hpp)
 
 ########## archivos a generar ##########
 
-EJEMPLOS_BIN := $(patsubst src/%,build/%,$(basename $(EJEMPLOS_CPP)))
-UTIL_O       := $(patsubst src/%,build/object/%,$(UTIL_CPP:.cpp=.o))
+EJEMPLOS_BIN  := $(patsubst src/%,build/%,$(basename $(EJEMPLOS_CPP)))
+UTILS_O       := $(patsubst src/%,build/object/%,$(UTILS_CPP:.cpp=.o))
 
 ########## reglas de compilación ##########
 
@@ -41,12 +39,12 @@ UTIL_O       := $(patsubst src/%,build/object/%,$(UTIL_CPP:.cpp=.o))
 #por defecto se generan todos los ejecutables de los ejemplos
 all: $(EJEMPLOS_BIN)
 
-#para un ejecutable se requiere el object correspondiente más los utils 
-build/Ejemplo%: build/object/Ejemplo%.o $(UTIL_HEADERS) $(UTIL_O)
-	g++ $< -o $@ $(UTIL_O) $(LDFLAGS)
+#para cada ejecutable se requiere el object correspondiente más los utils 
+build/Ejemplo%: build/object/Ejemplo%.o $(UTILS_HEADERS) $(UTILS_O)
+	g++ $< -o $@ $(UTILS_O) $(LDFLAGS)
 
-#para generar un object se requiere el fuente correspondiente más los headers
-build/object/%.o: src/%.cpp $(UTIL_HEADERS)
+#para generar un object se usa el fuente cpp correspondiente más los headers
+build/object/%.o: src/%.cpp $(UTILS_HEADERS)
 	mkdir -p "$(@D)"
 	g++ -c $(CFLAGS) -o $@ $<
 

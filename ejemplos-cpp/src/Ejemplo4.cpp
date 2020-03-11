@@ -6,7 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "util.hpp"
+#include "utils/util_opencv.hpp"
+#include "utils/util_strings.hpp"
 
 int sigma1 = 5;
 int sigma2 = 13;

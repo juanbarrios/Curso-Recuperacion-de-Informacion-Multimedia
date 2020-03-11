@@ -8,7 +8,8 @@
 #include <string>
 #include <vector>
 
-#include "util.hpp"
+#include "utils/util_opencv.hpp"
+#include "utils/util_strings.hpp"
 
 namespace {
 
@@ -74,7 +75,7 @@ void visualizar(const cv::Mat &frec_complex) {
 	cv::Mat frec_logMagnitud;
 	cv::log(frec_magnitud + 1, frec_logMagnitud);
 	//normalizar y mostrar
-	cv::normalize(frec_logMagnitud, frec_logMagnitud, 0, 1, CV_MINMAX);
+	cv::normalize(frec_logMagnitud, frec_logMagnitud, 0, 1, cv::NORM_MINMAX);
 	cv::imshow("LogMagnitud", frec_logMagnitud);
 }
 

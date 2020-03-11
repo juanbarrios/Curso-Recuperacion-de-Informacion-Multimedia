@@ -6,7 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "util.hpp"
+#include "utils/util_opencv.hpp"
+#include "utils/util_strings.hpp"
 
 static int threshold_1 = 210;
 static int threshold_2 = 110;

@@ -6,7 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "util.hpp"
+#include "utils/util_opencv.hpp"
+#include "utils/util_strings.hpp"
 
 static int delta = 5;
 static int sobel_threshold = 21;

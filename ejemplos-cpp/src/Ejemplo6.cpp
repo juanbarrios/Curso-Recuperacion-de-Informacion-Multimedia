@@ -12,8 +12,10 @@
 #include <string>
 #include <vector>
 
-#include "Mfcc.hpp"
-#include "util.hpp"
+#include "utils/Mfcc.hpp"
+#include "utils/util_files.hpp"
+#include "utils/util_opencv.hpp"
+#include "utils/util_strings.hpp"
 
 namespace {
 
