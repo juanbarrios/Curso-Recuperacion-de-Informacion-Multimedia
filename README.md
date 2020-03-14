@@ -1,10 +1,10 @@
 # Curso Recuperación de Información Multimedia
 
- 1. [Introducción](#intro)
- 2. [Material Docente](#material)
- 3. [Código Fuente](#codigo)
- 4. [Bibliografía](#bibliografia)
- 5. [Información del curso](#info)
+  1. [Introducción](#intro)
+  2. [Material Docente](#material)
+  3. [Código Fuente](#codigo)
+  4. [Bibliografía](#bibliografia)
+  5. [Información del curso](#info)
  
 
 ## Introducción <a name="intro"></a>
@@ -56,15 +56,15 @@ El material docente del curso está dividido en cuatro partes.
 
 ## Código Fuente <a name="codigo"></a>
 
-Código fuente [para C++ 11](ejemplos/cpp/):
-	* En un terminal cambiar al directorio donde está el archivo de `Makefile` y escribir `make`.
-	* Ejecutar:
-		* Linux: `build/Ejemplo1`
-		* Windows: `build\Ejemplo1.exe`
+Código fuente [para C++ 11](ejemplos-cpp/):
+  * En un terminal cambiar al directorio donde está el archivo de `Makefile` y escribir `make`.
+  * Ejecutar:
+    * Linux: `build/Ejemplo1`
+    * Windows: `build\Ejemplo1.exe`
 
-Código fuente [para Python 3](ejemplos/python/):
-	* Los archivos `.py` se ejecutan desde un terminal con el comando `python`.
-	* Los archivos `.ipynb` deben ser abiertos con **Jupyter**.
+Código fuente [para Python 3](ejemplos-python/):
+  * Los archivos `.py` se ejecutan desde un terminal con el comando `python`.
+  * Los archivos `.ipynb` deben ser abiertos con **Jupyter**.
 
 ## Bibliografía <a name="bibliografia"></a>
 
@@ -85,5 +85,7 @@ Código fuente [para Python 3](ejemplos/python/):
 ## Información del curso <a name="info"></a>
 
 El curso CC5213 se dicta en el [Departmento de Ciencias de la Computación de la Universidad de Chile](https://www.dcc.uchile.cl/). Es un curso electivo de la carrera de ingeniería civil en computación y es tomado por estudiantes de pregrado de ingeniería (computación, eléctrica, industrial) y estudiantes de posgrado (magíster y doctorado en computación). 
+
+Actualmente (Otoño 2020) el curso [se está dictando](https://juan.cl/mir/) en la FCFM, Universidad de Chile.
 
 Parte del material de este curso también se usa en el curso Recuperación de Información del [Diplomado de Ciencia de Datos](https://www.dcc.uchile.cl/datos).
