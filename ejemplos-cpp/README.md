@@ -16,7 +16,7 @@ Al usar MinGW-w64 no se puede usar directamente GPU porque las DLL de cuda está
 
 Además del compilador, se necesitan herramientas básicas de Linux (como `bash`, `make`, `find`, `grep`). Un proyecto que ofrece versiones de esos comandos para windows se llama **MSYS2** que ofrece un administrador de paquetes (`pacman`) y permite descargar versiones compiladas de todas las librerías.
 
-Para usar OpenCV:
+Para usar OpenCV con MinGW-w64:
   1. **Descargar MSYS2**: Entrar a https://sourceforge.net/projects/msys2/ descargar (actualmente`msys2-x86_64-20190524.exe`) e instalar en `C:\msys64`.
   1. **Actualizar**: En el terminal "MSYS2 MinGW 64-bits" escribir `pacman -Syu`. Ejecutar nuevamente `pacman -Syu` hasta que diga que está todo actualizado.
      - (bugfix) Actualmente al actualizar ocurre un error `connection timed out after 10000 milliseconds` porque no está disponible el mirror http://repo.msys2.org. Para corregirlo, entrar a la carpeta `C:\msys64\etc\pacman.d\`, modificar los archivos `mirrorlist.*` y comentar el repositorio `http://repo.msys2.org`. Ojo que la actualización puede modificar los mirrors por lo que nuevamente hay que comentar `http://repo.msys2.org` de `mirrorlist.*`.
@@ -43,10 +43,10 @@ Una gran desventaja es que el compilador no cumple con C++11. Además Visual Stu
 
 Se debe descargar Visual Studio del sitio de Microsoft. La versión profesional es pagada pero existe una versión gratuita llamada "Community".
 
-Para usar OpenCV:
-	1. Descargar la distribución para Windows de `https://opencv.org/releases.html`, descargar `opencv-xxx-vc14_vc15.exe` y descomprimir en `C:\[ZZZ]\opencv`
-	1. La descarga incluye las DLL para Visual Studio por lo que basta agregar al PATH la ruta `C:\[ZZZ]\opencv\build\x64\vc15\bin`.
-	1. Además se debe agregar al PATH la ruta `C:\[ZZZ]\opencv\build\bin` para usar la DLL `opencv_ffmpeg.dll` que contiene distintos codecs. Si no se realiza este paso no se podrán leer archivos `.mp4` ni otros videos.
+Para usar OpenCV con Visual Studio:
+  1. Descargar la distribución para Windows de `https://opencv.org/releases.html`, descargar `opencv-xxx-vc14_vc15.exe` y descomprimir en `C:\[ZZZ]\opencv`
+  1. La descarga incluye las DLL para Visual Studio por lo que basta agregar al PATH la ruta `C:\[ZZZ]\opencv\build\x64\vc15\bin`.
+  1. Además se debe agregar al PATH la ruta `C:\[ZZZ]\opencv\build\bin` para usar la DLL `opencv_ffmpeg.dll` que contiene distintos codecs. Si no se realiza este paso no se podrán leer archivos `.mp4` ni otros videos.
 
 También es posible compilar los fuentes de OpenCV. Para esto se requiere bajar e instalar CMake desde https://cmake.org/download/. Al ejecutar cmake sobre los fuentes se genera un archivo `.solution` el cual se abre con Visual Studio. En el IDE se presiona sobre el botón compilar y (luego de mucho tiempo) genera las DLLs.
 
@@ -113,18 +113,18 @@ make install
 Para compilar un programa en C++ usualmente se requieren dos pasos:
 
   1. Paso 1 (`-c`): Convertir código fuente en código binario (object file).
-    - Para cada `.cpp` se debe ejecutar `g++ -c -o archivo1.o archivo1.cpp`.
-    - El compilador lee el fuente en el `.cpp`, resuelve todas las instrucciones `#include ...`  y si el código no tiene problemas generará un `.o` con la versión binaria del fuente.
-    - Parámetros `-Iruta` configuran lugares para buscar headers además de `/usr/include/`
-    - El parámetro `-std=c++11` para usar C++11
-    - Los parámetros `-Wall` para warnings y `-Wextra` para aún más warnings.
+      - Para cada `.cpp` se debe ejecutar `g++ -c -o archivo1.o archivo1.cpp`.
+      - El compilador lee el fuente en el `.cpp`, resuelve todas las instrucciones `#include ...`  y si el código no tiene problemas generará un `.o` con la versión binaria del fuente.
+      - Parámetros `-Iruta` configuran lugares para buscar headers además de `/usr/include/`
+      - El parámetro `-std=c++11` para usar C++11
+      - Los parámetros `-Wall` para warnings y `-Wextra` para aún más warnings.
 
   1. Paso 2 (linkeo): Crear el ejecutable o librería.
-    - Se reúnen todos los object file `.o` y se asocia cada llamada a un método con su implementación, ya sea entre object files o con librerías externas (linkage).
-    - Para crear ejecutable: `g++ -o ejemplo archivo1.o archivo2.o` Notar que entre todos los `.o` debe existir un único método `main()`.
-    - Para crear librería compartida: `g++ -shared -o libejemplo.so archivo1.o archivo2.o`  (en linux son `.so`, en windows son `.dll`)
-    - Parámetros `-Lruta` configuran lugares para buscar librerías compartidas (a parte de `/usr/lib/`).
-    - Parámetros `-lnombre` declaran las librerías externas a buscar (se buscará `libnombre.so` en las rutas definidas por `-L`).
+      - Se reúnen todos los object file `.o` y se asocia cada llamada a un método con su implementación, ya sea entre object files o con librerías externas (linkage).
+      - Para crear ejecutable: `g++ -o ejemplo archivo1.o archivo2.o` Notar que entre todos los `.o` debe existir un único método `main()`.
+      - Para crear librería compartida: `g++ -shared -o libejemplo.so archivo1.o archivo2.o`  (en linux son `.so`, en windows son `.dll`)
+      - Parámetros `-Lruta` configuran lugares para buscar librerías compartidas (a parte de `/usr/lib/`).
+      - Parámetros `-lnombre` declaran las librerías externas a buscar (se buscará `libnombre.so` en las rutas definidas por `-L`).
 
 Notar que para proyectos pequeños, puede ser más fácil compilar y linkear en un solo comando, como `g++ -o ejemplo -Imi_opencv/include *.cpp -Lmi_opencv/lib -lopencv_core -lopencv_imgproc`
 
