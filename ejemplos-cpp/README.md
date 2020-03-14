@@ -1,4 +1,4 @@
-﻿# CC5213 - Recuperación de Información Multimedia
+# CC5213 - Recuperación de Información Multimedia
 
 # Instalar C++ y OpenCV
 
@@ -108,7 +108,7 @@ make -j4
 make install
 ```
 
-## Cómo compular un programa en C++
+## Compilación de programas en C++
 
 Para compilar un programa en C++ usualmente se requieren dos pasos:
 
