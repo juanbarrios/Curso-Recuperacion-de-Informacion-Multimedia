@@ -3,7 +3,6 @@ import cv2
 import os
 from utils import utils
 
-
 def procesar_imagen(filename):
     print("abriendo {}".format(filename))
     imagen_color = cv2.imread(filename, cv2.IMREAD_COLOR)
@@ -16,7 +15,6 @@ def procesar_imagen(filename):
     cv2.imshow(window_name, imagen_color)
     cv2.imshow(window_name + " BINARIA", imagen_bin)
     print("{}: size={} threshold_otsu={}".format(window_name, imagen_color.shape, threshold))
-
 
 def procesar_archivos(filenames):
     if len(filenames) == 0:
@@ -31,8 +29,7 @@ def procesar_archivos(filenames):
 
 
 print("CC5213 - Ejemplo 1 OTSU")
-print("Usando OpenCV {} con Python {}.{}.{}".format(cv2.__version__, sys.version_info.major, sys.version_info.minor,
-                                                    sys.version_info.micro))
+print("Usando OpenCV {} con Python {}.{}.{}".format(cv2.__version__, sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
 
 if utils.print_help(sys.argv):
     print("Uso: {} [filenames]".format(sys.argv[0]))
