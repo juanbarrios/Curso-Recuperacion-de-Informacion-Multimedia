@@ -3,7 +3,7 @@
 #include <QApplication>
 #include <QFileDialog>
 
-std::vector<std::string> ui_select_filenames() {
+std::vector<std::string> ui_select_images() {
 	int argc = 0;
 	char **argv = 0;
 	QApplication app(argc, argv);
@@ -17,4 +17,16 @@ std::vector<std::string> ui_select_filenames() {
 		list.push_back(fileName.toStdString());
 	}
 	return list;
+}
+
+std::string ui_select_video() {
+	int argc = 0;
+	char **argv = 0;
+	QApplication app(argc, argv);
+	QFileDialog::Options options;
+	QString selectedFilter;
+	QString filename = QFileDialog::getOpenFileName(nullptr,
+			QString("Elegir Video"), ".", QString("Videos (*.mpg *.mp4 *.avi)"),
+			&selectedFilter, options);
+	return filename.toStdString();
 }

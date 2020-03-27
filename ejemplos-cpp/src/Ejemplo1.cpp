@@ -32,28 +32,27 @@ void procesar_imagen(const std::string &filename) {
 	std::cout << window_name << ": size=" << imagen_color.size()
 			<< " threshold_otsu=" << threshold << std::endl;
 }
-void procesar_archivos(std::vector<std::string> filenames) {
-	if (filenames.size() == 0)
-		filenames = ui_select_filenames();
-	if (filenames.size() == 0)
+
+void procesar(const std::vector<std::string> &args) {
+	std::cout << "CC5213 - Ejemplo 1 OTSU" << std::endl;
+	std::cout << "Usando OpenCV " << CV_VERSION << std::endl;
+	if ((args.size() > 1) && (args[1] == "--help")) {
+		std::cout << "  Uso: " << basename(args[0]) << " [filenames]"
+				<< std::endl;
 		return;
+	}
+	std::vector<std::string> filenames(args.begin() + 1, args.end());
+	if (filenames.size() == 0)
+		filenames = ui_select_images();
+	if (filenames.size() == 0) {
+		std::cout << "sin imagenes" << std::endl;
+		return;
+	}
 	for (std::string filename : filenames)
 		procesar_imagen(filename);
 	std::cout << "Presione una tecla..." << std::endl;
 	cv::waitKey(0);
 	cv::destroyAllWindows();
-}
-
-void procesar(const std::vector<std::string> &args) {
-	std::cout << "CC5213 - Ejemplo 1 OTSU" << std::endl;
-	std::cout << "Usando OpenCV " << CV_VERSION << std::endl;
-	if (print_help(args)) {
-		std::cout << "  Uso: " << basename(args[0]) << " [filenames]"
-				<< std::endl;
-	} else {
-		std::vector<std::string> filenames(args.begin() + 1, args.end());
-		procesar_archivos(filenames);
-	}
 	std::cout << "fin" << std::endl;
 }
 

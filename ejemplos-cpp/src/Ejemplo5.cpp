@@ -10,35 +10,43 @@
 
 #include "utils/util_opencv.hpp"
 #include "utils/util_strings.hpp"
+#include "utils/util_ui.hpp"
 
 namespace {
 
-int desde_x = 4, desde_y = 20;
-int size_x = 8, size_y = 8;
-int delta_pos = 5;
-int mult_real = 100, mult_imaginaria = 10;
-int delta_mult = 2;
+int zona_x = 4, zona_y = 20;
+int zona_w = 1, zona_h = 1;
+int scale_real = 100, scale_imag = 1;
 
-void modificar_param(char key, char key_subir, char key_bajar, int &parametro, int delta, const std::string &nombre) {
+int delta_position = 5;
+int delta_scale = 1;
+
+void print_params(const std::string &operacion) {
+	std::cout << operacion << " [" << zona_x << ", " << zona_y << "]-["
+			<< zona_w << ", " << zona_h << "] -> scale=(" << scale_real << ","
+			<< scale_imag << ")" << std::endl;
+}
+void modificar_param(char key, char key_subir, char key_bajar, int &parametro,
+		int delta, const std::string &nombre) {
 	if (key == key_subir) {
 		parametro += delta;
-		std::cout << nombre << "=" << parametro << std::endl;
+		print_params("+" + nombre);
 	} else if (key == key_bajar) {
 		if (parametro - delta > 0)
 			parametro -= delta;
-		std::cout << nombre << "=" << parametro << std::endl;
+		print_params("-" + nombre);
 	}
 }
 
 void modificarFrecuencias(cv::Mat &frec_complex) {
 	//ciclo sobre un rango de frecuencias
-	for (int i = desde_y; i < desde_y + size_y; ++i) {
-		for (int j = desde_x; j < desde_x + size_x; ++j) {
+	for (int i = zona_y; i < zona_y + zona_h; ++i) {
+		for (int j = zona_x; j < zona_x + zona_w; ++j) {
 			//obtener el peso de esa frecuencia
 			cv::Vec2f complex_value = frec_complex.at<cv::Vec2f>(i, j);
 			//modificar el peso
-			complex_value[0] *= mult_real;
-			complex_value[1] *= mult_imaginaria;
+			complex_value[0] *= scale_real;
+			complex_value[1] *= scale_imag;
 			//actualizar el peso de esa frecuencia
 			frec_complex.at<cv::Vec2f>(i, j) = complex_value;
 		}
@@ -78,6 +86,14 @@ void visualizar(const cv::Mat &frec_complex) {
 	cv::normalize(frec_logMagnitud, frec_logMagnitud, 0, 1, cv::NORM_MINMAX);
 	cv::imshow("LogMagnitud", frec_logMagnitud);
 }
+void usar_key(char key) {
+	modificar_param(key, 'a', 'z', zona_x, delta_position, "x");
+	modificar_param(key, 's', 'x', zona_y, delta_position, "y");
+	modificar_param(key, 'd', 'c', zona_w, delta_position, "w");
+	modificar_param(key, 'f', 'v', zona_h, delta_position, "h");
+	modificar_param(key, 'i', 'k', scale_real, delta_scale, "real");
+	modificar_param(key, 'o', 'l', scale_imag, delta_scale, "imag");
+}
 
 void ejemplo(const std::string &filename) {
 	cv::VideoCapture capture = abrir_video(filename);
@@ -98,7 +114,8 @@ void ejemplo(const std::string &filename) {
 		//visualizar las frecuencias
 		visualizar(frecuencias_complex);
 		//invertir la DFT
-		cv::idft(frecuencias_complex, output_frame, cv::DFT_SCALE | cv::DFT_REAL_OUTPUT);
+		cv::idft(frecuencias_complex, output_frame,
+				cv::DFT_SCALE | cv::DFT_REAL_OUTPUT);
 		//mostrar la imagen resultante
 		output_frame.convertTo(output_frame_gris, CV_8U);
 		cv::imshow("OUTPUT", output_frame_gris);
@@ -108,12 +125,7 @@ void ejemplo(const std::string &filename) {
 			key = cv::waitKey(0) & 0xFF;
 		if (key == 'q' or key == 27)
 			break;
-		modificar_param(key, 'a', 'z', desde_x, delta_pos, "desde_x");
-		modificar_param(key, 's', 'x', desde_y, delta_pos, "desde_y");
-		modificar_param(key, 'd', 'c', size_x, delta_pos, "size_x");
-		modificar_param(key, 'f', 'v', size_y, delta_pos, "size_y");
-		modificar_param(key, 'i', 'k', mult_real, delta_mult, "mult_real");
-		modificar_param(key, 'o', 'l', mult_imaginaria, delta_mult, "mult_imaginaria");
+		usar_key(key);
 	}
 	capture.release();
 	cv::destroyAllWindows();
@@ -121,17 +133,24 @@ void ejemplo(const std::string &filename) {
 
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
 	try {
 		std::vector<std::string> args = get_args_vector(argc, argv);
 		std::cout << "Ejemplo 5 DFT" << std::endl;
-		if (args.size() != 2) {
-			std::cout << "Uso: " << args[0] << " [video_filename | webcam_id]" << std::endl;
-			return 1;
+		std::cout << "Uso: " << args[0] << " [video_filename | webcam_id]"
+				<< std::endl;
+		std::cout << "[a,z] [s,x] [d,c] [f,v] -> ajuste del rectangulo"
+				<< std::endl;
+		std::cout << "[i,k] -> modificar parte real" << std::endl;
+		std::cout << "[o,l] -> modificar parte imaginaria" << std::endl;
+		std::string filename = "";
+		if (args.size() >= 2) {
+			filename = args[1];
+		} else {
+			filename = ui_select_video();
 		}
-		std::string filename = args[1];
 		ejemplo(filename);
-	} catch (const std::exception& ex) {
+	} catch (const std::exception &ex) {
 		std::cout << "Ha ocurrido un ERROR: " << ex.what() << std::endl;
 	} catch (...) {
 		std::cout << "Ha ocurrido ERROR desconocido" << std::endl;

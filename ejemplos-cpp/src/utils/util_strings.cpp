@@ -10,9 +10,7 @@ std::vector<std::string> get_args_vector(int argc, char **argv) {
 	}
 	return args;
 }
-bool print_help(const std::vector<std::string> &args) {
-	return (args.size() > 1) && (args[1] == "--help");
-}
+
 int parse_int(const std::string &string) {
 	std::size_t next_position = 0;
 	int n;
