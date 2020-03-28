@@ -31,9 +31,9 @@ def procesar_archivos(filenames):
 print("CC5213 - Ejemplo 1 OTSU")
 print("Usando OpenCV {} con Python {}.{}.{}".format(cv2.__version__, sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
 
-if utils.print_help(sys.argv):
+if "--help" in sys.argv:
     print("Uso: {} [filenames]".format(sys.argv[0]))
 else:
     procesar_archivos(sys.argv[1:])
 
-print("fin")
+print("FIN")

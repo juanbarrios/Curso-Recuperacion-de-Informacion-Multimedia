@@ -14,9 +14,9 @@ def ui_select_filenames():
 def ui_select_video():
     app = QApplication(list());
     options = QFileDialog.Options()
-    filename, _ = QFileDialog.getOpenFileName(None, "Videos", ".", "Videos (*.mp4 *.mpg)", options=options)
+    filename, _ = QFileDialog.getOpenFileName(None, "Videos", ".", "Videos (*.mp4 *.mpg *.avi)", options=options)
     if not filename:
-        return "0"
+        filename = "0" # id de la webcam: 0=primera webcam, 1=segunda webcam
     return filename
 
 def agregar_texto(imagen, texto):
@@ -45,7 +45,7 @@ def mostrar_imagen(window_name, imagen):
     if imagen.shape[0] > MAX_HEIGHT or imagen.shape[1] > MAX_WIDTH:
         fh = MAX_HEIGHT / imagen.shape[0]
         fw = MAX_WIDTH / imagen.shape[1]
-        escala = min(fh,fw)
+        escala = min(fh, fw)
         imagen = cv2.resize(imagen, (0,0), fx=escala, fy=escala)
     #mostrar en pantalla
     cv2.imshow(window_name, imagen)
@@ -73,5 +73,3 @@ def abrir_video(filename):
         raise Exception("no puedo abrir video {}".format(filename))
     return capture;
 
-def print_help(argv):
-    return "--help" in argv
