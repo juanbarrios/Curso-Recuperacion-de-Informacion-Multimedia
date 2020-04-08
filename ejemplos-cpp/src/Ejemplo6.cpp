@@ -19,42 +19,34 @@
 
 namespace {
 
-std::vector<short> loadAudioSamples(const std::string &filename, int sample_rate) {
+std::string exportar_audio_raw(const std::string &filename, int sample_rate) {
 	//s16le: Signed 16 bits little-endian
 	const std::string codec = "s16le";
-	//archivo de salida con el audio raw
-	std::string fileOutput = filename + "." + codec + "." + std::to_string(sample_rate) + ".raw";
-	std::vector<short> audio_samples;
-	if (!existe_archivo(fileOutput)) {
-		//ejecutar el comando FFMPEG para decodificar el audio
-		std::string command = "ffmpeg -y -i  \"" + filename + "\" -ac 1 -vn -sn -ar " + std::to_string(sample_rate) + " -f " + codec + " -acodec pcm_" + codec
-				+ " \"" + fileOutput + "\"";
-		std::cout << "running: " << command << std::endl;
-		int ret = std::system(command.c_str());
-		if (ret != 0) {
-			std::cout << "error al ejecutar: " << command << std::endl;
-			return audio_samples;
-		}
-	}
-	//abrir el archivo raw
-	std::ifstream infile;
-	infile.open(fileOutput);
-	if (!infile.is_open()) {
-		std::cout << "no puedo abrir " << fileOutput << std::endl;
-		return audio_samples;
-	}
-	std::cout << "leyendo " << fileOutput << std::endl;
-	//ir al final
-	infile.seekg(0, std::ios::end);
-	//obtener la posicion en bytes
-	int numBytes = infile.tellg();
-	//volver al inicio
-	infile.seekg(0, std::ios::beg);
-	//convertir numero de bytes a numero de samples
-	int numSamples = numBytes / sizeof(short);
-	//leer todos los bytes del archivo
-	audio_samples.resize(numSamples);
-	infile.read(reinterpret_cast<char*>(audio_samples.data()), numBytes);
+	//nombre del archivo de salida con el audio raw
+	std::stringstream ss1;
+	ss1 << filename_sin_extension(filename) << "." << codec << "."
+			<< sample_rate << ".raw";
+	std::string filenameOutput = ss1.str();
+	//si ya existe ese archivo, retornarlo
+	if (existe_archivo(filenameOutput))
+		return filenameOutput;
+	//ejecutar FFMPEG para decodificar el audio
+	std::stringstream ss2;
+	ss2 << "ffmpeg -loglevel warning -y -i  \"" << filename
+			<< "\" -ac 1 -vn -sn -ar " << sample_rate << " -f " << codec
+			<< " -acodec pcm_" << codec << " \"" << filenameOutput << "\"";
+	std::string command = ss2.str();
+	std::cout << "running: " << command << std::endl;
+	int ret = std::system(command.c_str());
+	if (ret != 0)
+		throw std::runtime_error("error al ejecutar: " + command);
+	return filenameOutput;
+}
+
+std::vector<short> loadAudioSamples(const std::string &filename,
+		int sample_rate) {
+	std::string fileOutput = exportar_audio_raw(filename, sample_rate);
+	std::vector<short> audio_samples = leer_bytes_archivo<short>(fileOutput);
 	return audio_samples;
 }
 
@@ -70,7 +62,8 @@ double getMaxValue(const std::vector<T> &audio_samples) {
 }
 
 template<typename T>
-void printVector(const std::string &vector_name, const std::vector<T> &vector_values) {
+void printVector(const std::string &vector_name,
+		const std::vector<T> &vector_values) {
 	std::cout << vector_name << ":";
 	for (T value : vector_values) {
 		std::cout << " " << value;
@@ -78,7 +71,8 @@ void printVector(const std::string &vector_name, const std::vector<T> &vector_va
 	std::cout << std::endl;
 }
 
-void drawVector(cv::Mat &image, const std::vector<double> &vector_values, const cv::Scalar &color_background, const cv::Scalar &color_foreground,
+void drawVector(cv::Mat &image, const std::vector<double> &vector_values,
+		const cv::Scalar &color_background, const cv::Scalar &color_foreground,
 		double &global_maximum) {
 	//size de la imagen
 	int width = std::min(400, (int) vector_values.size());
@@ -87,8 +81,10 @@ void drawVector(cv::Mat &image, const std::vector<double> &vector_values, const 
 	int linea_base = image.rows / 2 - 1;
 	int alto_max = image.rows / 2 - 1;
 	//limpiar la imagen
-	cv::rectangle(image, cv::Point(0, 0), cv::Point(image.cols, image.rows), color_background, cv::FILLED);
-	cv::line(image, cv::Point(0, linea_base), cv::Point(image.cols, linea_base), cv::Scalar(0, 0, 0), 1);
+	cv::rectangle(image, cv::Point(0, 0), cv::Point(image.cols, image.rows),
+			color_background, cv::FILLED);
+	cv::line(image, cv::Point(0, linea_base), cv::Point(image.cols, linea_base),
+			cv::Scalar(0, 0, 0), 1);
 	//calcular el valor maximo del vector
 	double maxValue = getMaxValue(vector_values);
 	//actualizar el maximo global
@@ -116,12 +112,16 @@ void drawVector(cv::Mat &image, const std::vector<double> &vector_values, const 
 		prev = current;
 	}
 }
-void drawSpectogram(cv::Mat &image_gray, cv::Mat &image_color, const std::vector<double> &vector_values, double global_maximum, int &position) {
+void drawSpectogram(cv::Mat &image_gray, cv::Mat &image_color,
+		const std::vector<double> &vector_values, double global_maximum,
+		int &position) {
 	int height = std::min(1000, (int) vector_values.size());
 	if (position < 0) {
 		position = 0;
 		image_gray.create(height, height, CV_8UC1);
-		cv::rectangle(image_gray, cv::Point(0, 0), cv::Point(image_gray.cols, image_gray.rows), cv::Scalar::all(0), cv::FILLED);
+		cv::rectangle(image_gray, cv::Point(0, 0),
+				cv::Point(image_gray.cols, image_gray.rows), cv::Scalar::all(0),
+				cv::FILLED);
 	}
 	//usar el valor maximo del vector para escalar grises
 	double maxValue = global_maximum;
@@ -143,14 +143,18 @@ void drawSpectogram(cv::Mat &image_gray, cv::Mat &image_color, const std::vector
 
 void ejemplo(const std::vector<short> &audio_samples, int samplerate) {
 	//procesar el audio por ventanas
-	std::size_t ventana_num_samples = 1024;
-	std::size_t despl_num_samples = 128;
+	std::size_t ventana_num_samples = 4096;
+	std::size_t despl_num_samples = 1024;
 	//print sizes en milisegundos
 	int audio_ms = std::round((1000.0 * audio_samples.size()) / samplerate);
 	int ventana_ms = std::round((1000.0 * ventana_num_samples) / samplerate);
 	int despl_ms = std::round((1000.0 * despl_num_samples) / samplerate);
-	std::cout << "audio= " << audio_ms << " ms.(" << audio_samples.size() << " samples)  ventana=" << ventana_ms << " ms.(" << ventana_num_samples
-			<< " samples)  desplazamiento= " << despl_ms << " ms.(" << despl_num_samples << " samples)" << std::endl;
+	std::cout << "audio largo=" << audio_samples.size() << " samples, "
+			<< audio_ms << " ms., " << audio_ms / 1000 / 60
+			<< " mins.  samplerate=" << samplerate << std::endl;
+	std::cout << "ventana largo=" << ventana_num_samples << " samples, "
+			<< ventana_ms << " ms.  desplazamiento= " << despl_num_samples
+			<< " samples, " << despl_ms << " ms." << std::endl;
 	//procesar el audio por ventanas
 	std::vector<double> ventana_samples;
 	ventana_samples.resize(ventana_num_samples);
@@ -158,9 +162,11 @@ void ejemplo(const std::vector<short> &audio_samples, int samplerate) {
 	//el numero de coeficientes esta dado por la libreria FFTW3
 	std::size_t num_coeficientes_ft = ventana_num_samples / 2 + 1;
 	//espacio para los complejos de salida, cada fftw_malloc debe tener un fftw_free
-	fftw_complex *coeficientes_ft = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * num_coeficientes_ft);
+	fftw_complex *coeficientes_ft = (fftw_complex*) fftw_malloc(
+			sizeof(fftw_complex) * num_coeficientes_ft);
 	//preparar la FT. r2c=real to complex. recibe los arrays de entrada y salida
-	fftw_plan plan_ft = fftw_plan_dft_r2c_1d(ventana_num_samples, ventana_samples.data(), coeficientes_ft, FFTW_MEASURE);
+	fftw_plan plan_ft = fftw_plan_dft_r2c_1d(ventana_num_samples,
+			ventana_samples.data(), coeficientes_ft, FFTW_MEASURE);
 	//vector para guardar el espectro (magnitud de los complejos)
 	std::vector<double> energias_espectro;
 	energias_espectro.resize(num_coeficientes_ft);
@@ -172,23 +178,28 @@ void ejemplo(const std::vector<short> &audio_samples, int samplerate) {
 	mfcc.init(samplerate, numFilters, num_coeficientes_ft, numCoeffs);
 	std::vector<double> mfcc_descriptor;
 	//imagenes a mostrar
-	cv::Mat image_samples, image_spectrum, image_spectogram, image_spectogram_color, image_mfcc;
+	cv::Mat image_samples, image_spectrum, image_spectogram,
+			image_spectogram_color, image_mfcc;
 	///valor del maximo para normalizar la visualizacion
 	double max_sample = getMaxValue(audio_samples);
-	std::cout << "samplerate=" << samplerate << "  num_coeficientes_ft=" << num_coeficientes_ft << std::endl;
+	std::cout << "samplerate=" << samplerate << "  num_coeficientes_ft="
+			<< num_coeficientes_ft << std::endl;
 	//no se conocen a priori estos maximos, se iran escalando de a poco
 	double max_energy = 0;
 	double max_mfcc = 0;
 	int spectogram_position = -1;
 	//ciclo por ventada
-	for (std::size_t start = 0; start + ventana_num_samples < audio_samples.size(); start += despl_num_samples) {
+	for (std::size_t start = 0;
+			start + ventana_num_samples < audio_samples.size(); start +=
+					despl_num_samples) {
 		//obtengo los valores de la ventana
 		for (std::size_t i = 0; i < ventana_num_samples; ++i) {
 			ventana_samples[i] = audio_samples[start + i];
 			//se puede multiplicar la ventana por una funcion que suavice los bordes: Hann
 		}
 		//dibujar el audio
-		drawVector(image_samples, ventana_samples, cv::Scalar(0, 127, 127), cv::Scalar(255, 255, 127), max_sample);
+		drawVector(image_samples, ventana_samples, cv::Scalar(0, 127, 127),
+				cv::Scalar(255, 255, 127), max_sample);
 		cv::imshow("samples", image_samples);
 		//calcular la FT
 		fftw_execute(plan_ft);
@@ -199,15 +210,18 @@ void ejemplo(const std::vector<short> &audio_samples, int samplerate) {
 			energias_espectro[i] = std::sqrt(real * real + imag * imag);
 		}
 		//dibujar el espectro
-		drawVector(image_spectrum, energias_espectro, cv::Scalar(0, 127, 0), cv::Scalar(0, 255, 255), max_energy);
+		drawVector(image_spectrum, energias_espectro, cv::Scalar(0, 127, 0),
+				cv::Scalar(0, 255, 255), max_energy);
 		cv::imshow("spectrum", image_spectrum);
 		//dibujar el espectograma
-		drawSpectogram(image_spectogram, image_spectogram_color, energias_espectro, max_energy, spectogram_position);
+		drawSpectogram(image_spectogram, image_spectogram_color,
+				energias_espectro, max_energy, spectogram_position);
 		cv::imshow("spectogram", image_spectogram_color);
 		//calcular mfcc
 		mfcc.getCoefficients(energias_espectro, mfcc_descriptor);
 		//dibujar el descriptor
-		drawVector(image_mfcc, mfcc_descriptor, cv::Scalar(127, 127, 127), cv::Scalar(255, 255, 255), max_mfcc);
+		drawVector(image_mfcc, mfcc_descriptor, cv::Scalar(127, 127, 127),
+				cv::Scalar(255, 255, 255), max_mfcc);
 		//printVector("mfcc", mfcc_descriptor);
 		cv::imshow("mfcc", image_mfcc);
 		//esperar una tecla. ESC=salir, espacio=pausa
@@ -226,13 +240,15 @@ const double pi = 3.14159265358979323846;
 std::vector<short> generateSamplesAndSave(int samplerate) {
 	std::vector<short> audio_samples;
 	double hertz1 = 500;
-	double hertz2 = 4000;
-	double amplitud = 20000;
-	for (int j = 0; j < 10; ++j) {
+	double hertz2 = 300;
+	double amplitud = 10000;
+	for (int j = 0; j < 1000; ++j) {
 		for (int i = 0; i < samplerate / 2; ++i) {
-			short sample1 = (short) (amplitud * std::cos(i * 2 * pi / samplerate * hertz1));
-			short sample2 = (short) (amplitud * std::cos(i * 2 * pi / samplerate * hertz2));
-			short sample = sample1+sample2;
+			short sample1 = (short) (amplitud*2
+					* std::cos(i * 2 * pi / samplerate * hertz1));
+			short sample2 = (short) (amplitud/2
+					* std::cos(i * 2 * pi / samplerate * hertz2));
+			short sample = sample1 + sample2;
 			audio_samples.push_back(sample);
 		}
 	}
@@ -243,16 +259,18 @@ std::vector<short> generateSamplesAndSave(int samplerate) {
 		std::cout << "error escribiendo " << newfilename << std::endl;
 		return audio_samples;
 	}
-	outfile.write((char*) audio_samples.data(), sizeof(short) * audio_samples.size());
+	outfile.write((char*) audio_samples.data(),
+			sizeof(short) * audio_samples.size());
 	outfile.close();
 	std::cout << "guardado " << newfilename << std::endl;
-	std::cout << "ffplay -f s16le -acodec pcm_s16le -ar " << samplerate << " " << newfilename << std::endl;
+	std::cout << "ffplay -f s16le -acodec pcm_s16le -ar " << samplerate << " "
+			<< newfilename << std::endl;
 	return audio_samples;
 }
 
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
 	try {
 		std::vector<std::string> args = get_args_vector(argc, argv);
 		std::cout << "Ejemplo 6 AUDIO" << std::endl;
@@ -261,7 +279,7 @@ int main(int argc, char** argv) {
 			//return 1;
 		}
 		//calidad del audio
-		int samplerate = 22000;
+		int samplerate = 8192;
 		std::vector<short> audio_samples;
 		if (args.size() <= 1) {
 			audio_samples = generateSamplesAndSave(samplerate);
@@ -277,7 +295,7 @@ int main(int argc, char** argv) {
 				return 1;
 		}
 		ejemplo(audio_samples, samplerate);
-	} catch (const std::exception& ex) {
+	} catch (const std::exception &ex) {
 		std::cout << "Ha ocurrido un ERROR: " << ex.what() << std::endl;
 	} catch (...) {
 		std::cout << "Ha ocurrido ERROR desconocido" << std::endl;

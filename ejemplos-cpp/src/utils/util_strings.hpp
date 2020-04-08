@@ -10,3 +10,5 @@ int parse_int(const std::string &string);
 double parse_double(const std::string &string);
 
 std::string basename(const std::string &filename);
+
+std::string filename_sin_extension(const std::string &filename);

@@ -46,3 +46,9 @@ std::string basename(const std::string &filename) {
 
 }
 
+std::string filename_sin_extension(const std::string &filename) {
+	std::size_t posStart = filename.find_last_of("/\\") + 1;
+	std::size_t posDot = filename.find_last_of(".");
+	return (posDot <= 0 || posDot <= posStart) ?
+			filename : filename.substr(0, posDot);
+}

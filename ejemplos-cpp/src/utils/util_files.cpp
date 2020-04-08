@@ -1,15 +1,15 @@
-#include "util_ui.hpp"
-#include <iostream>
+#include <string>
+#include <vector>
 #include <algorithm>
-#include <cstddef>
 #include <fstream>
+#include <iostream>
 #include <dirent.h>
 #include <sys/stat.h>
 
 namespace {
 //se usa un namespace anónimo para funciones privadas visibles solo dentro de este archivo
 
-void agregar_archivo(const std::string &dirname, const std::string &name,
+void agregar_filename(const std::string &dirname, const std::string &name,
 		std::vector<std::string> &list) {
 	std::string fullpath = dirname + "/" + name;
 #if defined WIN32 || defined _WIN32
@@ -44,7 +44,7 @@ std::vector<std::string> listar_archivos(const std::string &dirname) {
 	struct dirent *dir_entry;
 	while ((dir_entry = readdir(dp)) != NULL) {
 		std::string name(dir_entry->d_name);
-		agregar_archivo(dirname, name, list);
+		agregar_filename(dirname, name, list);
 	}
 	if (closedir(dp) != 0) {
 		std::cout << "error cerrando " << dirname << std::endl;
@@ -82,3 +82,4 @@ std::vector<std::string> leer_lineas_archivo(const std::string &filename) {
 	}
 	return lines;
 }
+
