@@ -44,9 +44,9 @@ double sumar_magnitud_vectores(const cv::Mat &flow) {
 	return round(total / 1000);
 }
 
-const int step = 3;
-
 void dibujarVectores(const cv::Mat &flow, cv::Mat &imgFlow) {
+	//saltarse algunos pixeles para que se vean mejor los vectores
+	int step = 3;
 	for (int y = 0; y < flow.rows; y += step)
 		for (int x = 0; x < flow.cols; x += step) {
 			const cv::Point2f &f = flow.at<cv::Point2f>(y, x);
@@ -67,33 +67,41 @@ void ejemplo(const std::string &filename) {
 	for (;;) {
 		char c = cv::waitKey(1);
 		if (c == 'q' || c == 27) {
-			std::cout << "exit!" << std::endl;
+			std::cout << "salir!" << std::endl;
 			break;
 		} else if (c == ' ') {
 			c = cv::waitKey(0);
 		} else if (!capture.grab() || !capture.retrieve(frame)
 				|| frame.empty()) {
-			std::cout << "video end!" << std::endl;
+			std::cout << "final del video!" << std::endl;
 			cv::waitKey(0);
 			break;
 		}
 		cont++;
-		//if (cont % 10 != 0)
+		//saltar algunos frames
+		//if (cont % 3 != 0)
 		//	continue;
+		//el flujo optico se calcula sobre la imagen gris
 		cv::cvtColor(frame, gris, cv::COLOR_BGR2GRAY);
+		//se reduce el tamaño a la mitad para procesar más rápido
 		cv::resize(gris, current, cv::Size(0, 0), 0.5, 0.5, cv::INTER_LINEAR);
+		//inicio
 		if (previous.empty()) {
 			current.copyTo(previous);
 			continue;
 		}
-		cv::calcOpticalFlowFarneback(previous, current, flow, 0.99, 1, 5, 20,
+		//calcular flujo optico, genera una matriz con los vectores para cada pixel
+		cv::calcOpticalFlowFarneback(previous, current, flow, 0.5, 10, 50, 20,
 				5, 1.1, 0);
+		//se muestra la "cantidad de movimiento" sumando el largo de los vectores
 		std::cout << "frame=" << cont << "  suma="
 				<< sumar_magnitud_vectores(flow) << std::endl;
+		//inicializar la imagen con la imagen original (podria ser con cero)
 		cv::cvtColor(current, imgFlow, cv::COLOR_GRAY2BGR);
 		//imgFlow = 0;
 		dibujarVectores(flow, imgFlow);
 		cv::imshow("FLOW", imgFlow);
+		//ciclo
 		current.copyTo(previous);
 	}
 }
